@@ -1,13 +1,22 @@
 import React from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import App from './App'
-import GiveOpinions from './Pages/GiveOpinions'
+import Stories from './Pages/Stories'
 import Catalog from './Pages/Catalog'
 import { CatalogDetail } from './Pages/CatalogDetail'
+import Layout from './Components/Layout'
 
 export const Router = createBrowserRouter([
-    { path: '/', element: <App />},
-    { path: '/opinions', element: <GiveOpinions />},
-    { path: '/catalog', element: <Catalog />},
-    { path: '/product', element: <CatalogDetail />}
+    {
+        path: '/',
+        element: <Layout />, 
+        children: [
+            { path: '/', element: <App /> },
+            { path: '/stories', element: <Stories /> }, 
+            { path: '/catalog', element: <Catalog /> },
+            { path: '/catalog/:animal', element: <CatalogDetail /> }
+        ]
+    }
 ])
+
+export default Router
