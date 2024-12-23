@@ -7,10 +7,10 @@ function App() {
   return (
     <>
       <h1>
-        Bienvenido a nuestra fakestore
+        Bienvenido a nuestra Fake Fundación de Adopción de Mascotas
       </h1>
       <p className="read-the-docs">
-        Todo lo que buscas para ti y tu hogar
+        La mejor compañía que buscas para ti y tu familia.
       </p>
     </>
   )
