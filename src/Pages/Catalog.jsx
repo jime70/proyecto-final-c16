@@ -1,5 +1,7 @@
-import { CardActionArea, CardContent, CircularProgress, Grid2, Link, Typography } from '@mui/material';
+import { CardActionArea, CardContent, CircularProgress, Grid2, Typography, Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
+
 
 const Catalog = () => {
   const [animales, setAnimales] = useState([]);
@@ -7,8 +9,10 @@ const Catalog = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    
     const fetchAnimales = async () => {
       try {
+        
         const response = await fetch('https://huachitos.cl/api/animales');
         if (!response.ok) {
           throw new Error('Error al obtener los datos');
@@ -52,41 +56,58 @@ const Catalog = () => {
         }}
       >
         {animales.map((animal) => (
-          <div
-            key={animal.id}
+        <div
+        key={animal.id}
+        style={{
+          border: '1px solid rgb(138, 134, 134)',
+          borderRadius: '8px',
+          padding: '10px',
+          textAlign: 'justify',
+          color: 'rgb(36, 35, 37, 0.84)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center', 
+        }}
+      >
+        <CardActionArea>
+          <img
+            src={animal.imagen}
+            alt={animal.nombre}
             style={{
-              border: '1px solid rgb(138, 134, 134)',
+              width: '100%',
+              height: '150px',
+              objectFit: 'cover',
               borderRadius: '8px',
-              padding: '10px',
-              textAlign: 'justify',
-              color: 'rgb(36, 35, 37, 0.84)',
+            }}
+          />
+          <div
+            style={{
+              marginTop: '10px',
+              display: 'flex',
+              justifyContent: 'center', 
+              width: '100%',
             }}
           >
-            <CardActionArea
+            <Button
+              size="small"
+              variant="contained"
+              href="#contained-buttons"
               component={Link}
-              to={`/catalog/${animal.id}`} 
-              state={{ animal }}
-            >
-              <img
-                src={animal.imagen}
-                alt={animal.nombre}
-                style={{
-                  width: '100%',
-                  height: '150px',
-                  objectFit: 'cover',
-                  borderRadius: '8px',
-                }}
-              />
-              <CardContent>
-                <Typography>
-                  <h4>ID: {animal.id} - {animal.tipo}</h4>
-                  <h4>Nombre: {animal.nombre}</h4>
-                  <h4>Comuna: {animal.comuna}</h4>
-                  <h4>Edad: {animal.edad}</h4>
-                </Typography>
-              </CardContent>
-            </CardActionArea>
+              to={`/catalog/${animal.id}`}
+              state={{ animal }}>
+              Más Información
+            </Button>
           </div>
+          <CardContent>
+            <Typography>
+              <h4>ID: {animal.id} - {animal.tipo}</h4>
+              <h4>Nombre: {animal.nombre}</h4>
+              <h4>Comuna: {animal.comuna}</h4>
+              <h4>Edad: {animal.edad}</h4>
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </div>
         ))}
       </div>
     </div>
