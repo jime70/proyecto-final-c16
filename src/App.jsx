@@ -1,9 +1,7 @@
 import './App.css'
 import Carousel from './Components/Carousel';
 
-
 function App() {
-  
 
   return (
     <>
@@ -14,7 +12,6 @@ function App() {
         La mejor compañía que buscas para ti y tu familia.
       </p>
       <Carousel />
-    
     </>
   )
 }

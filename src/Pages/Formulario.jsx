@@ -1,18 +1,19 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Typography'; // Asegúrate de importar Typography
+import * as React from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography"; // Asegúrate de importar Typography
+import { Link } from "react-router-dom";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -24,7 +25,7 @@ export default function UserForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Formulario enviado');
+    console.log("Formulario enviado");
     handleOpen(); // Abre el modal después de enviar el formulario
   };
 
@@ -32,18 +33,18 @@ export default function UserForm() {
     <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { m: 1, width: '100%' },
+        "& .MuiTextField-root": { m: 1, width: "100%" },
         maxWidth: 600,
-        margin: 'auto',
+        margin: "auto",
         padding: 2,
-        border: '1px solid #ccc',
-        borderRadius: '8px',
+        border: "1px solid #ccc",
+        borderRadius: "8px",
       }}
       onSubmit={handleSubmit}
       noValidate
       autoComplete="off"
     >
-      <h2 style={{ textAlign: 'center' }}>Formulario de Contacto</h2>
+      <h2 style={{ textAlign: "center" }}>Formulario de Contacto</h2>
       <TextField id="name" label="Nombre" variant="outlined" required />
       <TextField id="telephone" label="Teléfono" variant="outlined" required />
       <TextField
@@ -65,7 +66,7 @@ export default function UserForm() {
         variant="contained"
         color="primary"
         type="submit"
-        sx={{ margin: '16px 0', width: '100%' }}
+        sx={{ margin: "16px 0", width: "100%" }}
       >
         Enviar
       </Button>
@@ -85,9 +86,29 @@ export default function UserForm() {
           <Button
             onClick={handleClose}
             variant="contained"
-            sx={{ mt: 2, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
+            sx={{
+              mt: 2,
+              display: "block",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
           >
-            Cerrar
+            Volver a Formulario
+          </Button>
+
+          <Button
+            variant="contained"
+            color="success"
+            component={Link}
+            to="/catalog"
+            sx={{
+              mt: 2,
+              display: "block",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            Regresar al Catálogo
           </Button>
         </Box>
       </Modal>

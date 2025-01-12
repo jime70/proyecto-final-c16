@@ -13,11 +13,12 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
+import logo from "../Images/logo.png";
 
 const pages = [
-    { name: "HOME", path: '/'},
-    { name: 'CATALOGO', path: '/catalog'},
-    { name: 'FORMULARIO', path: '/formulario' },
+    { name: "HOME", path: "/" },
+    { name: "CATALOGO", path: "/catalog" },
+    { name: "FORMULARIO", path: "/formulario" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -26,14 +27,14 @@ function Navbar() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
     const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
+    setAnchorElNav(event.currentTarget);
     };
     const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
+    setAnchorElUser(event.currentTarget);
     };
 
     const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
+    setAnchorElNav(null);
     };
 
     const handleCloseUserMenu = () => {
@@ -41,27 +42,29 @@ function Navbar() {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar position="fixed">
         <Container maxWidth="xl">
             <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-            <Typography
-                variant="h6"
-                noWrap
+            <Box
                 component={Link}
-                to='/'
+                to="/"
                 sx={{
-                mr: 2,
                 display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
+                alignItems: "center",
                 textDecoration: "none",
+                mr: 2,
                 }}
             >
-                LOGO
-            </Typography>
+                <img
+                src={logo}
+                alt="Logo"
+                border-radius="50%"
+                style={{
+                    height: "40px",
+                    width: "auto",
+                }}
+                />
+            </Box>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
                 <IconButton
@@ -91,8 +94,15 @@ function Navbar() {
                 sx={{ display: { xs: "block", md: "none" } }}
                 >
                 {pages.map((page) => (
-                    <MenuItem key={page.name} onClick={handleCloseNavMenu} component={Link} to={page.path}> 
-                    <Typography sx={{ textAlign: "center" }}>{page.name}</Typography>
+                    <MenuItem
+                    key={page.name}
+                    onClick={handleCloseNavMenu}
+                    component={Link}
+                    to={page.path}
+                    >
+                    <Typography sx={{ textAlign: "center" }}>
+                        {page.name}
+                    </Typography>
                     </MenuItem>
                 ))}
                 </Menu>
@@ -102,7 +112,7 @@ function Navbar() {
                 variant="h5"
                 noWrap
                 component={Link}
-                to={'/'}
+                to={"/"}
                 sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -134,4 +144,4 @@ function Navbar() {
         </AppBar>
     );
     }
-export default Navbar;
+    export default Navbar;

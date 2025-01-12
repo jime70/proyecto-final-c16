@@ -35,6 +35,7 @@ const Carousel = () => {
             &#8250;
         </button>
         </div>
+        
     );
 };
 
