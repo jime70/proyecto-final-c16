@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Box } from '@mui/material';
 
 const Footer = () => {
@@ -10,7 +10,7 @@ const Footer = () => {
             justifyContent: 'center', 
             alignItems: 'center', 
             height: '50px', 
-            backgroundColor: '#2980b9', 
+            backgroundColor: '#b8c9d6', 
             color: 'white',
             fontSize: '0.875rem',
         }}

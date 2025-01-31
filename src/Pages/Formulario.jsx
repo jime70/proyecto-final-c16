@@ -91,6 +91,8 @@ export default function UserForm() {
               display: "block",
               marginLeft: "auto",
               marginRight: "auto",
+              backgroundColor: '#b8c9d6',
+              color: 'black'
             }}
           >
             Volver a Formulario
@@ -104,8 +106,7 @@ export default function UserForm() {
             sx={{
               mt: 2,
               display: "block",
-              marginLeft: "auto",
-              marginRight: "auto",
+              textAlign: 'center'
             }}
           >
             Regresar al Catálogo

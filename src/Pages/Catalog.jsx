@@ -1,5 +1,5 @@
 import { CardActionArea, CardContent, CircularProgress, Typography, Button, Grid2 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
@@ -33,6 +33,25 @@ const Catalog = () => {
 
     fetchAnimales();
   }, []);
+  const fetchBuscadorPorEstado = async () => {
+    try {
+      const response = await fetch(`https://huachitos.cl/api/animales/tipo/${searchTerm}`);
+      if (!response.ok) {
+        throw new Error('Error al obtener los datos');
+      }
+      const respuestaData = await response.json();
+      setAnimales(respuestaData.data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const onSearch = (event) => { 
+    setSearchTerm(event.target.value);
+  }
 
   const totalPages = Math.ceil(animales.length / itemsPerPage);
   const currentAnimales = animales.slice(
@@ -62,7 +81,10 @@ const Catalog = () => {
 
   return (
     <div style={{ padding: '20px' }}>
+      
       <h1>Animales en Adopción</h1>
+      <input type="text" placeholder="Buscar por nombre o especie..." onChange={onSearch}/>
+      <button onClick={fetchBuscadorPorEstado}>Buscar</button>
       <div
         style={{
           display: 'grid',
