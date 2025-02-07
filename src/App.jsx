@@ -13,6 +13,7 @@ function App() {
       <p className="read-the-docs">
         La mejor compañía que buscas para ti y tu familia.
       </p>
+      
       <Carousel />
     </>
   )

@@ -1,4 +1,6 @@
-import { CardActionArea, CardContent, CircularProgress, Typography, Button, Grid2 } from '@mui/material';
+import "./Catalog.css"; 
+
+import { CardActionArea, CardContent, CircularProgress, Typography, Button, Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import Pagination from '@mui/material/Pagination';
@@ -13,7 +15,7 @@ const Catalog = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
 
-  const itemsPerPage = 12; 
+  const itemsPerPage = 12;
 
   useEffect(() => {
     const fetchAnimales = async () => {
@@ -33,20 +35,6 @@ const Catalog = () => {
 
     fetchAnimales();
   }, []);
-  const fetchBuscadorPorEstado = async () => {
-    try {
-      const response = await fetch(`https://huachitos.cl/api/animales/tipo/${searchTerm}`);
-      if (!response.ok) {
-        throw new Error('Error al obtener los datos');
-      }
-      const respuestaData = await response.json();
-      setAnimales(respuestaData.data);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const [searchTerm, setSearchTerm] = useState('');
   const onSearch = (event) => { 
@@ -65,26 +53,35 @@ const Catalog = () => {
 
   if (loading) {
     return (
-      <Grid2
-        container
-        alignItems="center"
+      <Box
+        display="flex"
         justifyContent="center"
-        sx={{ minHeight: '100vh' }}
+        alignItems="center"
+        minHeight="100vh"
       >
         <CircularProgress />
         <h2>Cargando animales...</h2>
-      </Grid2>
+      </Box>
     );
   }
 
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div style={{ padding: '20px' }}>
-      
-      <h1>Animales en Adopción</h1>
+    <div className="catalog-container">
+      <h1 className="catalog-title">Animales en Adopción</h1>
+
+      <Box className="catalog-description">
+        <p>
+          Adoptar un animal no solo transforma su vida, sino que también aporta felicidad y compañía a la tuya. 
+          Brindar un hogar a un animal rescatado ayuda a reducir el número de animales en situación de calle 
+          y fomenta una cultura de respeto y cuidado hacia ellos. ¡Haz la diferencia adoptando con amor!
+        </p>
+      </Box>
+
       <input type="text" placeholder="Buscar por nombre o especie..." onChange={onSearch}/>
-      <button onClick={fetchBuscadorPorEstado}>Buscar</button>
+      <button>Buscar</button>
+
       <div
         style={{
           display: 'grid',
@@ -128,7 +125,6 @@ const Catalog = () => {
                 <Button
                   size="small"
                   variant="contained"
-                  href="#contained-buttons"
                   component={Link}
                   to={`/catalog/${animal.id}`}
                   state={{ animal }}

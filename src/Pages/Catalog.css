@@ -1,0 +1,17 @@
+.catalog-container {
+  padding: 20px;
+}
+
+.catalog-title {
+  color: #1e1030; /* h1 */
+  text-align: center;
+  font-size: 2rem;
+}
+
+.catalog-description {
+  font-size: 1.2rem;
+  text-align: justify;
+  color: #29292b; /*  texto */
+  margin-bottom: 20px;
+  line-height: 1.5;
+}

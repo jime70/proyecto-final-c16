@@ -13,11 +13,15 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
 import logo from "../Images/logo.png";
 
+
 const pages = [
   { name: "HOME", path: "/" },
-  { name: "CATALOGO", path: "/catalog" },
-  { name: "FORMULARIO", path: "/formulario" },
+  { name: "CATALOG", path: "/catalog" },
+  { name: "FORM", path: "/formulario" },
+  { name: "STORE", path: "/store" },  
+  { name: "SERVICES", path: "/services" }, 
 ];
+
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Navbar() {
@@ -27,6 +31,7 @@ function Navbar() {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -43,6 +48,7 @@ function Navbar() {
     <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          {/* Logo */}
           <Box
             component={Link}
             to="/"
@@ -56,10 +62,10 @@ function Navbar() {
             <img
               src={logo}
               alt="Logo"
-              border-radius="50%"
               style={{
                 height: "40px",
                 width: "auto",
+                borderRadius: "50%",
               }}
             />
           </Box>
@@ -105,7 +111,9 @@ function Navbar() {
               ))}
             </Menu>
           </Box>
+
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+
           <Typography
             variant="h5"
             noWrap
@@ -124,6 +132,7 @@ function Navbar() {
           >
             RESCATE ANIMAL
           </Typography>
+
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
@@ -146,4 +155,5 @@ function Navbar() {
     </AppBar>
   );
 }
+
 export default Navbar;
