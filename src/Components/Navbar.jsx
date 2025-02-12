@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
-import logo from "../Images/logo.png";
+import logo from "../Images/logo.jpeg";
 
 
 const pages = [
@@ -45,9 +45,9 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="fixed">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+    <AppBar position="fixed" sx={{ backgroundColor: "#145b86" }}>
+      <Container maxWidth="xl" >
+        <Toolbar disableGutters >
           {/* Logo */}
           <Box
             component={Link}

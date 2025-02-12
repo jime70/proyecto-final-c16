@@ -6,12 +6,23 @@ body, html, #root {
   background-color: #ececd5;
 }
 
-h1 {
+.sample {
+  margin: 10px auto; 
+  background-color: #ece8ff;
+  padding: 2px;
+  border: 2px solid #a48fe7;
+  width: 90%;
+  border-radius: 8px;
+}
+
+h2 {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 50px;
+  font-size: 3rem;
 }
 
 .read-the-docs {
   color: #2c2525;
   text-align: center;
+  font-size: 1.5rem;
 }
