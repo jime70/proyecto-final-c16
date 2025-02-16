@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -11,24 +12,29 @@ import Grupo from "../Images/grupo.jpg";
 import Adopcion from "../Images/adopcion.png";
 import Rescate from "../Images/rescate.png";
 import Entrenamiento from "../Images/entrenamiento.jpg";
-import { Grid2 } from "@mui/material";
-
+import Grid from "@mui/material/Grid";
 
 const servicios = [
   {
     titulo: "Información sobre Adopción",
-    descripcion: "Todo lo que necesitas saber para adoptar una mascota y darle un hogar.",
+    descripcion:
+      "Todo lo que necesitas saber para adoptar una mascota y darle un hogar.",
     imagen: Adopcion,
+    enlace: "/formulario",
   },
   {
-    titulo: "Rescate y Cuidado",
-    descripcion: "Apoyamos el rescate y cuidado de animales en situación de calle.",
+    titulo: "Juguetes y Cuidado",
+    descripcion:
+      "Apoyamos el rescate y cuidado de animales en situación de calle.",
     imagen: Rescate,
+    enlace: "/store",
   },
   {
     titulo: "Entrenamiento",
-    descripcion: "Mejoramos la convivencia con entrenamiento positivo para tu mascota.",
+    descripcion:
+      "Mejoramos la convivencia con entrenamiento positivo para tu mascota.",
     imagen: Entrenamiento,
+    enlace: "/store",
   },
 ];
 
@@ -77,9 +83,9 @@ export default function ActionAreaCard() {
         Más información sobre nuestros servicios
       </Typography>
 
-      <Grid2 container spacing={8} justifyContent="center">
+      <Grid container spacing={8} justifyContent="center">
         {servicios.map((servicio, index) => (
-          <Grid2 item xs={12} sm={6} md={4} key={index}>
+          <Grid item xs={12} sm={6} md={4} key={index}>
             <Card sx={{ maxWidth: 345, margin: "auto" }}>
               <CardMedia
                 component="img"
@@ -91,19 +97,29 @@ export default function ActionAreaCard() {
                 <Typography gutterBottom variant="h5" component="div">
                   {servicio.titulo}
                 </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  {servicio.descripcion}
-                </Typography>
+                <Typography variant="body2">{servicio.descripcion}</Typography>
+
+                <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                  <Button
+                    component={Link}
+                    to={servicio.enlace}
+                    size="small"
+                    variant="contained"
+                    sx={{
+                      borderRadius: 15,
+                      backgroundColor: "#A9B5DF",
+                      color: "black",
+                      "&:hover": { backgroundColor: "#8FA58D", color: "white" },
+                    }}
+                  >
+                    Más información
+                  </Button>
+                </Box>
               </CardContent>
-              <CardActions>
-                <Button size="small" variant="contained" color="primary">
-                  Más información
-                </Button>
-              </CardActions>
             </Card>
-          </Grid2>
+          </Grid>
         ))}
-      </Grid2>
+      </Grid>
     </Box>
   );
 }
