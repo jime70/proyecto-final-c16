@@ -1,11 +1,17 @@
+import { Box, Typography } from "@mui/material";
 import React from "react";
 
 function Store() {
   return (
-    <div>
-      <h1>Welcome to the Store</h1>
-      <p>Find everything you need for animal rescue here.</p>
-    </div>
+    <>
+    <Box> 
+      <Typography> 
+      <h1>Bienvenido a nuestra Tienda</h1>
+      <p>Encuentra lo necesario para tu mascota acá.</p>
+      </Typography>
+      
+      </Box>
+    </>
   );
 }
 

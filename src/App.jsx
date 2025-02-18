@@ -12,13 +12,11 @@ import entrenamiento from "./Images/entrenamiento.jpg";
 import { Link } from "react-router-dom";
 import Donations from "./Components/Donations";
 
-
-
 function App() {
   return (
     <>
       <Gallery />
-      <Box className="sample">
+      <Box className="sample" marginTop="3rem" marginBottom="1rem">
         <h2>Formas de ayudar a nuestros Huachitos</h2>
         <p className="read-the-docs">
           Te invitamos a formar parte de nuestra misión apoyando con alguna de
@@ -137,10 +135,28 @@ function App() {
       </Box>
 
       <Donations />
-      
-      {/* <Carousel2 /> */}
 
       <Carousel />
+      <Box display="flex" justifyContent="center">
+        <Button
+          variant="contained"
+          component={Link}
+          to="/information"
+          sx={{
+            mt: 2,
+            width: "20%",
+            borderRadius: 15,
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: 10,
+            backgroundColor: "#A9B5DF",
+            color: "black",
+            "&:hover": { backgroundColor: "#8FA58D", color: "white" },
+          }}
+        >
+          Sobre Nosotros
+        </Button>
+      </Box>
     </>
   );
 }

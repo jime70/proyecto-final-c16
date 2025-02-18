@@ -7,6 +7,7 @@ import { CatalogDetail } from './Pages/CatalogDetail';
 import Layout from './Components/Layout';
 import Store from './Pages/Store';  
 import Services from './Pages/Services';
+import Us from './Pages/Information';
 
 
 export const Router = createBrowserRouter([
@@ -18,8 +19,10 @@ export const Router = createBrowserRouter([
       { path: '/formulario', element: <Formulario /> },
       { path: '/catalog', element: <Catalog /> },
       { path: '/catalog/:id', element: <CatalogDetail /> },
-      { path: '/store', element: <Store /> },  
-      { path: '/services', element: <Services /> },  
+      { path: '/store', element: <Store /> }, 
+      //falta crear StoreDetail 
+      { path: '/services', element: <Services /> }, 
+      { path: '/information', element: <Us />}, 
     ],
   },
 ]);

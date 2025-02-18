@@ -1,13 +1,20 @@
-import "./Catalog.css"; 
+import "./Catalog.css";
 
-import { CardActionArea, CardContent, CircularProgress, Typography, Button, Box } from '@mui/material';
-import { useEffect, useState } from 'react';
+import {
+  CardActionArea,
+  CardContent,
+  CircularProgress,
+  Typography,
+  Button,
+  Box,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Pagination from '@mui/material/Pagination';
-import PaginationItem from '@mui/material/PaginationItem';
-import Stack from '@mui/material/Stack';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Pagination from "@mui/material/Pagination";
+import PaginationItem from "@mui/material/PaginationItem";
+import Stack from "@mui/material/Stack";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const Catalog = () => {
   const [animales, setAnimales] = useState([]);
@@ -20,9 +27,9 @@ const Catalog = () => {
   useEffect(() => {
     const fetchAnimales = async () => {
       try {
-        const response = await fetch('https://huachitos.cl/api/animales');
+        const response = await fetch("https://huachitos.cl/api/animales");
         if (!response.ok) {
-          throw new Error('Error al obtener los datos');
+          throw new Error("Error al obtener los datos");
         }
         const respuestaData = await response.json();
         setAnimales(respuestaData.data);
@@ -36,10 +43,10 @@ const Catalog = () => {
     fetchAnimales();
   }, []);
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const onSearch = (event) => { 
+  const [searchTerm, setSearchTerm] = useState("");
+  const onSearch = (event) => {
     setSearchTerm(event.target.value);
-  }
+  };
 
   const totalPages = Math.ceil(animales.length / itemsPerPage);
   const currentAnimales = animales.slice(
@@ -69,38 +76,55 @@ const Catalog = () => {
 
   return (
     <div className="catalog-container">
-      <h1 className="catalog-title">Animales en Adopción</h1>
-
+      <Typography
+        variant="h3"
+        textAlign="center"
+        padding="2"
+        sx={{
+          color: "text.secondary",
+          marginTop: "6rem",
+          fontFamily: "sans-serif",
+          fontWeight: "bold",
+        }}
+      >
+        Animales en Adopción
+      </Typography>
       <Box className="catalog-description">
         <p>
-          Adoptar un animal no solo transforma su vida, sino que también aporta felicidad y compañía a la tuya. 
-          Brindar un hogar a un animal rescatado ayuda a reducir el número de animales en situación de calle 
-          y fomenta una cultura de respeto y cuidado hacia ellos. ¡Haz la diferencia adoptando con amor!
+          Adoptar un animal no solo transforma su vida, sino que también aporta
+          felicidad y compañía a la tuya. Brindar un hogar a un animal rescatado
+          ayuda a reducir el número de animales en situación de calle y fomenta
+          una cultura de respeto y cuidado hacia ellos. ¡Te invitamos a hacer la diferencia
+          adoptando con amor!
         </p>
       </Box>
 
-      <input type="text" placeholder="Buscar por nombre o especie..." onChange={onSearch}/>
+      <input
+        type="text"
+        placeholder="Buscar por nombre o especie..."
+        onChange={onSearch}
+      />
       <button>Buscar</button>
 
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-          gap: '20px',
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          gap: "20px",
         }}
       >
         {currentAnimales.map((animal) => (
           <div
             key={animal.id}
             style={{
-              border: '1.5px solid rgba(100, 96, 96, 0.85)',
-              borderRadius: '8px',
-              padding: '10px',
-              textAlign: 'justify',
-              color: 'rgb(36, 35, 37, 0.84)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
+              border: "1.5px solid rgba(100, 96, 96, 0.85)",
+              borderRadius: "8px",
+              padding: "10px",
+              textAlign: "justify",
+              color: "rgb(36, 35, 37, 0.84)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
             <CardActionArea>
@@ -108,18 +132,18 @@ const Catalog = () => {
                 src={animal.imagen}
                 alt={animal.nombre}
                 style={{
-                  width: '100%',
-                  height: '150px',
-                  objectFit: 'cover',
-                  borderRadius: '8px',
+                  width: "100%",
+                  height: "150px",
+                  objectFit: "cover",
+                  borderRadius: "8px",
                 }}
               />
               <div
                 style={{
-                  marginTop: '10px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  width: '100%',
+                  marginTop: "10px",
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "100%",
                 }}
               >
                 <Button
@@ -134,7 +158,9 @@ const Catalog = () => {
               </div>
               <CardContent>
                 <Typography>
-                  <h4>ID: {animal.id} - {animal.tipo}</h4>
+                  <h4>
+                    ID: {animal.id} - {animal.tipo}
+                  </h4>
                   <h4>Nombre: {animal.nombre}</h4>
                   <h4>Comuna: {animal.comuna}</h4>
                   <h4>Edad: {animal.edad}</h4>
@@ -145,7 +171,7 @@ const Catalog = () => {
         ))}
       </div>
 
-      <Stack spacing={2} style={{ marginTop: '20px', alignItems: 'center' }}>
+      <Stack spacing={2} style={{ marginTop: "20px", alignItems: "center" }}>
         <Pagination
           count={totalPages}
           page={page}

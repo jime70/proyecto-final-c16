@@ -16,10 +16,11 @@ import logo from "../Images/logo.jpeg";
 
 const pages = [
   { name: "HOME", path: "/" },
-  { name: "CATALOG", path: "/catalog" },
+  { name: "ADOPTIONS", path: "/catalog" },
   { name: "FORM", path: "/formulario" },
   { name: "STORE", path: "/store" },  
   { name: "SERVICES", path: "/services" }, 
+  { name: "ABOUT US", path: "/information" },
 ];
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];

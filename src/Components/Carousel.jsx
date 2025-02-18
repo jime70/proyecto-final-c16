@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { images } from "../Helpers/CarouselData";
 import "./Carousel.css"; 
+import { Typography } from "@mui/material";
 
 const Carousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -16,6 +17,16 @@ const Carousel = () => {
     };
 
     return (
+        <> 
+        <Typography gutterBottom variant="body1" padding= '20px' color="black" sx={{ 
+            fontSize: "25px",
+            fontWeight: "bold",
+            fontStyle: "italic",
+            fontFamily: "Helvetica, sans-serif",
+            textAlign: "center",
+            }}>
+            Lo invitamos a conocernos
+        </Typography>
         <div className="carousel">
         <button className="carousel-btn" onClick={handlePrev}>
             &#8249;
@@ -34,8 +45,9 @@ const Carousel = () => {
         <button className="carousel-btn" onClick={handleNext}>
             &#8250;
         </button>
+
         </div>
-        
+        </>
     );
 };
 

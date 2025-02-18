@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CardActionArea from "@mui/material/CardActionArea";
@@ -45,7 +44,6 @@ export default function ActionAreaCard() {
         Nuestros Servicios
       </Typography>
 
-      {/* ✅ Tarjeta principal */}
       <Card sx={{ width: "100%", margin: "auto" }}>
         <CardActionArea>
           <CardMedia
