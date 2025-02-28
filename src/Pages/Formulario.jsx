@@ -80,11 +80,13 @@ export default function UserForm() {
 
         <Box
           component="form"
+
           sx={{
             "& .MuiTextField-root": { m: 2, width: "100%" },
             maxWidth: "800px", 
             margin: "auto",
             padding: 3,
+            backgroundColor:"#f8eeff",
             border: "2px solid #ccc",
             borderRadius: "10px",
           }}
@@ -92,7 +94,7 @@ export default function UserForm() {
           noValidate
           autoComplete="off"
         >
-          <h2 style={{ textAlign: "center", marginTop: "10px" }}>
+          <h2 style={{ textAlign: "center", marginTop: "10px", color: "#0d3477" }}>
             Formulario de Contacto
           </h2>
 

@@ -15,7 +15,7 @@ const Footer = () => {
             fontSize: '0.875rem',
         }}
         >
-        © 2024 Fake Fundación de Adopción - Propiedad intelectual de Jimena Espinoza - Cohorte 16 - Página creada con fines académicos
+        © 2025 Fake Fundación de Adopción - Propiedad intelectual de Jimena Espinoza - Cohorte 16 - Página creada con fines académicos
         </Box>
     );
 };

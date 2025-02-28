@@ -1,18 +1,22 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CardActionArea from "@mui/material/CardActionArea";
-
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Grupo from "../Images/grupo.jpg";
+import fundacion from "../Images/fundacion.jpg";
 import Grid2 from "@mui/material/Grid2";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
 
 import testimonio1 from "../Images/testimonio1.jpeg";
 import testimonio2 from "../Images/testimonio2.jpg";
 import testimonio3 from "../Images/testimonio3.jpg";
+import woman from "../Images/woman.jpg";
+import man from "../Images/man.jpg";
 
 const servicios = [
   {
@@ -35,6 +39,15 @@ const servicios = [
   },
 ];
 
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  ...theme.applyStyles("dark", { backgroundColor: "#1A2027" }),
+}));
+
 export default function ActionAreaCard() {
   return (
     <Box sx={{ padding: 6, textAlign: "center", marginTop: 5 }}>
@@ -47,8 +60,8 @@ export default function ActionAreaCard() {
           <CardMedia
             component="img"
             sx={{ maxHeight: 300, objectFit: "cover" }}
-            image={Grupo}
-            alt="Max"
+            image={fundacion}
+            alt="mascotas"
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
@@ -57,33 +70,103 @@ export default function ActionAreaCard() {
             <Typography
               variant="body2"
               textAlign="justify"
-              sx={{ color: "text.secondary" }}
+              sx={{ color: "text.secondary", fontSize: "15px" }}
             >
-              Fundación Huachitos nació como una forma de ayudar a muchas
-              mascotas en situación de abandono. Lo que en un principio nació
-              como un proyecto de medio tiempo, se convirtió en un compromiso
-              con nuestros peludos amigos para rescatarlos de situaciones
-              extremas, proporcionarles el cuidado adecuado, alimentarlos, y
-              encontrarles un hogar definitivo que los acoja y los cuide.
-              Nuestro compromiso comenzó extendiéndose a toda la zona de la
-              Región Metropolitana, pero poco a poco hemos extendido nuestra
-              misión a ayudar a familias de todo el país con nuestros
-              asesoramientos online. A medida que crecemos, hemos podido firmar
-              convenios con distintas instituciones, que nos permiten entregar
-              cuidados médicos y de comida adecuados. En Fundación Huachitos
-              creemos que cada mascota merece una segunda oportunidad y que, con
-              amor y compromiso, podemos cambiar sus vidas. Sin embargo, nuestra
-              labor no sería posible sin el apoyo de personas como tú. Puedes
-              ayudarnos de muchas maneras: adoptando, siendo hogar temporal,
-              donando alimentos o insumos médicos, o simplemente difundiendo n
-              uestra causa. Juntos, podemos hacer la diferencia y brindarle a
-              cada animalito el hogar que tanto necesita. Si quieres ser parte
-              de este cambio, contáctanos y ayúdanos a seguir construyendo un
-              futuro mejor para ellos.
+              Esta iniciativa nace de nuestra preocupación por la cantidad de
+              animales abandonados que vemos todos los días y de nuestra
+              comprensión de los retos a los que se enfrentan las personas,
+              fundaciones y agrupaciones que rescatan animales. Estos retos
+              incluyen la falta de visibilidad de los animales que tienen en
+              adopción y la reincidencia en el abandono. Nuestra principal
+              motivación es utilizar esta plataforma para conectar a tantos
+              animales necesitados con hogares que los amen y cuiden. En
+              Huachitos ofrecemos a fundaciones, organizaciones y rescatistas
+              independientes la oportunidad de promocionar de forma gratuita a
+              los animales que están bajo su cuidado esperando un hogar. Nuestro
+              objetivo principal es facilitar la búsqueda de hogares para los
+              animales rescatados y fomentar la tenencia y adopción
+              responsables. Además, difundimos también los animales perdidos
+              para ayudar en la reunificación con sus familias. Es importante
+              que sepas que todos los animales listados en Huachitos son
+              responsabilidad de las organizaciones, agrupaciones y rescatistas
+              individuales que los publican. Te recomendamos ponerte en contacto
+              con ellos para confirmar la disponibilidad del animal y obtener
+              información adicional. ¡Únete y juntos hagamos del mundo un lugar
+              mejor para los animales! Tu apoyo es fundamental para lograr un
+              impacto positivo en la vida de los animales de nuestro país y
+              reducir juntos el abandono.❤️
             </Typography>
           </CardContent>
         </CardActionArea>
       </Card>
+
+      <Box sx={{ marginTop: 4 }}></Box>
+
+      <Card sx={{ width: "100%", margin: "auto", padding: 2 }}>
+        <CardContent>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <Box sx={{ flexShrink: 0 }}>
+              <Card sx={{ maxWidth: 250 }}>
+                <CardMedia
+                  component="img"
+                  image={woman}
+                  alt="Karla"
+                  sx={{ width: "100%", height: "auto", borderRadius: 2 }}
+                />
+              </Card>
+            </Box>
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="h5" sx={{ marginBottom: 2 }}>
+                Hola, soy Karla.
+              </Typography>
+              <Typography variant="body1" textAlign="justify">
+                Gracias a la flexibilidad de mi trabajo, he podido dedicar mi
+                tiempo y esfuerzo a brindarles una segunda oportunidad a las
+                mascotas en situación de abandono. Junto a un equipo increíble,
+                fundamos esta organización con la misión de rescatar,
+                rehabilitar y encontrar hogares amorosos para cada mascota que
+                lo necesite.
+              </Typography>
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
+
+      <Box sx={{ marginTop: 4 }}></Box>
+
+      <Card sx={{ width: "100%", margin: "auto", padding: 2 }}>
+        <CardContent>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="h5" sx={{ marginBottom: 2 }}>
+                Hola, soy Rafael.
+              </Typography>
+              <Typography variant="body1" textAlign="justify">
+                Soy cofundador de Fundación Huachitos, nuestro amor y compromiso
+                a nuestra causa nos ha permitido extender nuestros esfuerzos a
+                toda la Región Metropolitana, pero aún hay mucho por avanzar.
+                Nuestros esfuerzos nos han permitido formar alianzas con otras
+                fundaciones para poder proporcionar la ayuda adeuada incluso en
+                tiempos de crisis. Creemos que cada vida cuenta y trabajamos con
+                pasión para hacer la diferencia.
+              </Typography>
+            </Box>
+
+            <Box sx={{ flexShrink: 0 }}>
+              <Card sx={{ maxWidth: 250 }}>
+                <CardMedia
+                  component="img"
+                  image={man}
+                  alt="Rafael"
+                  sx={{ width: "100%", height: "auto", borderRadius: 2 }}
+                />
+              </Card>
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
+
+      <Box sx={{ marginTop: 4 }}></Box>
 
       <Typography
         variant="h3"
@@ -113,14 +196,27 @@ export default function ActionAreaCard() {
           </Grid2>
         ))}
       </Grid2>
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-        <Typography>No olvides seguirnos en nuestras redes</Typography>
-      </Box>
 
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 2, gap: 2 }}>
         <Typography>
-          Te invitamos a ser parte de nuestra comunidad. Hazte socio acá
+          No olvides seguirnos en nuestras redes sociales.
         </Typography>
+
+        <a
+          href="https://www.instagram.com/huachitosapi/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <InstagramIcon sx={{ fontSize: 40, color: "#2D336B" }} />
+        </a>
+
+        <a
+          href="https://www.facebook.com/?sk=welcome"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FacebookIcon sx={{ fontSize: 40, color: "#2D336B" }} />
+        </a>
       </Box>
     </Box>
   );

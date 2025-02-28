@@ -36,9 +36,8 @@ function Gallery() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            boxShadow: 3,
+            boxShadow: 0,
             background: "none", 
-           
           }}
         >
           <CardContent>
