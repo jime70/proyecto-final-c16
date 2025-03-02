@@ -6,7 +6,7 @@ import UserState from "./contexts/clients/UserState";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <UserState> {/* ✅ Envuelve todo para que el contexto funcione */}
+    <UserState> 
       <RouterProvider router={Router} />
     </UserState>
   </StrictMode>
