@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { images } from "../Helpers/CarouselData";
+import { images } from "../../Helpers/CarouselData";
 import "./Carousel.css"; 
 import { Typography } from "@mui/material";
 

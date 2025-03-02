@@ -9,8 +9,8 @@ import Store from "./Pages/Store";
 import Services from "./Pages/Services";
 import Us from "./Pages/Information";
 import StoreDetail from "./Pages/StoreDetail";
-import Register from "./Pages/Register";
-import Login from "./Pages/Login";
+import Register from "./Components/Register/Register";
+import Login from "./Components/Login/Login";
 
 export const Router = createBrowserRouter([
   {
