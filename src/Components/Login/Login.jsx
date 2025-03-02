@@ -30,9 +30,9 @@ const Login = () => {
 
       if (response.status === 200) {
         const token = response.data.token;
-        localStorage.setItem("token", token); // Guarda el token en localStorage
+        localStorage.setItem("token", token); 
         setMessage("Inicio de sesión exitoso. Redirigiendo...");
-        setTimeout(() => navigate("/store"), 2000); // Redirige a la tienda
+        setTimeout(() => navigate("/store"), 2000); 
       } else {
         setMessage(response.data.msg || "Error en el inicio de sesión.");
       }
