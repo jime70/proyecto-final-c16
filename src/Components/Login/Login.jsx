@@ -1,82 +1,92 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect, useContext } from 'react'
+import ClientContext from '../../contexts/clients/ClientContext'
 
-const Login = () => {
-  const navigate = useNavigate();
-  const [data, setData] = useState({
-    username: "",
-    password: "",
-  });
+export default function Login(props) {
 
-  const [message, setMessage] = useState("");
+    const clientCtx = useContext(ClientContext)
 
-  const handleChange = (event) => {
-    setData({
-      ...data,
-      [event.target.name]: event.target.value,
-    });
-  };
+    const { 
+        loginClient,
+        authStatus,
+        verifyingToken
+    } = clientCtx
 
-  const sendData = async (event) => {
-    event.preventDefault();
-    setMessage("");
+    const [data, setData] = useState({
+        email: "",
+        password: ""
+    })
 
-    try {
-      const response = await axios.post(
-        "http://localhost:3003/api/clients/client-login",
-        data
-      );
 
-      if (response.status === 200) {
-        const token = response.data.token;
-        localStorage.setItem("token", token); 
-        setMessage("Inicio de sesión exitoso. Redirigiendo...");
-        setTimeout(() => navigate("/store"), 2000); 
-      } else {
-        setMessage(response.data.msg || "Error en el inicio de sesión.");
-      }
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-      setMessage(
-        error.response?.data?.message || "Error en el servidor. Intenta de nuevo."
-      );
+    useEffect(() => {
+        verifyingToken()
+
+        if(authStatus){
+            props.history.push("/perfil")
+        }
+
+    }, [authStatus])
+
+    if(authStatus) return null   
+
+
+    const handleChange = (event) => {
+
+        setData({
+            ...data,
+            [event.target.name]: event.target.value
+        })
+
     }
-  };
 
-  return (
-    <div>
-      <h2>Iniciar Sesión</h2>
+    const sendData = (event) => {
+        
+        event.preventDefault()
+        loginClient(data)
 
-      <form onSubmit={sendData}>
-        <div>
-          <label htmlFor="username">Usuario</label>
-          <input
-            id="username"
-            name="username"
-            type="text"
-            required
-            onChange={handleChange}
-          />
-        </div>
+    }
 
-        <div>
-          <label htmlFor="password">Contraseña</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            onChange={handleChange}
-          />
-        </div>
 
-        <button type="submit">Iniciar Sesión</button>
-      </form>
+    return (
+        <>
+            <div>
+                <div>
+                    <div>
+                        <h2>
+                            Iniciar sesión
+                        </h2>
+                    </div>
+                    <form onSubmit={(e) => { sendData(e) }}>
+                        <input type="hidden" name="remember" value="true" />
+                        <div>
+                            <div>
+                                <label for="email-address">Tu correo</label>
+                                <input 
+                                id="email-address" 
+                                onChange={(e) => { handleChange(e) }}
+                                name="email" type="email" autocomplete="email" required placeholder="Tu correo" />
+                            </div>
+                            <div>
+                                <label for="password">Password</label>
+                                
+                                <input id="password" 
+                                name="password" 
+                                onChange={(e) => { handleChange(e) }}
+                                type="password" autocomplete="current-password" 
+                                required 
+                                placeholder="Password" />
+                            </div>
+                        </div>
 
-      {message && <p>{message}</p>}
-    </div>
-  );
-};
 
-export default Login;
+                        <div>
+                            <button type="submit">
+                                Comenzar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </>
+    )
+}
+

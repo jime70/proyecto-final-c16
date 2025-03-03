@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, MenuItem, Button, Container } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import AccountCircle from "@mui/icons-material/AccountCircle"; // Icono de usuario
+import AccountCircle from "@mui/icons-material/AccountCircle"; 
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../Images/logo.jpeg";
 
@@ -21,9 +21,17 @@ function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false); 
   const navigate = useNavigate(); 
 
+  // 🔹 Detectar si hay un token en localStorage y actualizar el estado
   useEffect(() => {
-    const token = localStorage.getItem("token"); 
-    setIsAuthenticated(!!token);
+    const checkAuth = () => {
+      const token = localStorage.getItem("token");
+      setIsAuthenticated(!!token);
+    };
+
+    checkAuth(); 
+    window.addEventListener("storage", checkAuth); // 🔹 Detecta cambios en localStorage
+
+    return () => window.removeEventListener("storage", checkAuth);
   }, []);
 
   const handleOpenNavMenu = (event) => setAnchorElNav(event.currentTarget);
@@ -31,6 +39,7 @@ function Navbar() {
   const handleCloseNavMenu = () => setAnchorElNav(null);
   const handleCloseUserMenu = () => setAnchorElUser(null);
 
+  // 🔹 Función de Logout
   const handleLogout = () => {
     localStorage.removeItem("token"); 
     setIsAuthenticated(false); 
@@ -83,6 +92,7 @@ function Navbar() {
             ))}
           </Box>
 
+          {/* Menú de Usuario (Login / Logout) */}
           <Box sx={{ flexGrow: 0 }}>
             <IconButton onClick={handleOpenUserMenu} color="inherit">
               <AccountCircle />
@@ -94,8 +104,12 @@ function Navbar() {
             >
               {!isAuthenticated ? (
                 <>
-                  <MenuItem component={Link} to="/register" onClick={handleCloseUserMenu}>Registrarse</MenuItem>
-                  <MenuItem component={Link} to="/login" onClick={handleCloseUserMenu}>Iniciar Sesión</MenuItem>
+                  <MenuItem component={Link} to="/register" onClick={handleCloseUserMenu}>
+                    Registrarse
+                  </MenuItem>
+                  <MenuItem component={Link} to="/login" onClick={handleCloseUserMenu}>
+                    Iniciar Sesión
+                  </MenuItem>
                 </>
               ) : (
                 <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>

@@ -1,16 +1,15 @@
-import React from "react";
-
-const UserReducer = (globalState, action) => {
+const reducers = (globalState, action) => {
   switch (action.type) {
     case "LOGIN_EXITOSO":
     case "REGISTRO_EXITOSO":
-      localStorage.setItem("token", action.payload);
+      localStorage.setItem("token", action.payload.token);
+
       return {
         ...globalState,
         authStatus: true,
       };
 
-    case "OBTENER_USUARIO":
+    case "OBTENER_CLIENTE":
       return {
         ...globalState,
         authStatus: true,
@@ -19,10 +18,11 @@ const UserReducer = (globalState, action) => {
 
     case "CERRAR_SESION":
       localStorage.removeItem("token");
+
       return {
         ...globalState,
-        user: null,
-        authStatus: false,
+        client: null,
+        authStatus: null,
         loading: false,
       };
 
@@ -31,4 +31,4 @@ const UserReducer = (globalState, action) => {
   }
 };
 
-export default UserReducer;
+export default reducers;

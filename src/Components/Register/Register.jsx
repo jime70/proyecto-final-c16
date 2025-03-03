@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useContext } from "react";
+import ClientContext from "../../contexts/clients/ClientContext";
 
-const Register = () => {
-  const navigate = useNavigate();
+export default function Register() {
+  const clientCtx = useContext(ClientContext);
+  const { registerClient } = clientCtx;
+
   const [data, setData] = useState({
     name: "",
     username: "",
@@ -11,8 +12,9 @@ const Register = () => {
     password: "",
   });
 
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(""); // 🔹 Nuevo estado para mensajes de éxito/error
 
+  // 🔹 Maneja los cambios en los inputs
   const handleChange = (event) => {
     setData({
       ...data,
@@ -20,85 +22,50 @@ const Register = () => {
     });
   };
 
+  // 🔹 Envía el formulario
   const sendData = async (event) => {
     event.preventDefault();
-    setMessage("");
+    setMessage(""); // Limpia el mensaje anterior
 
-    try {
-      const response = await axios.post(
-        "http://localhost:3003/api/clients/register",
-        data
-      );
+    const response = await registerClient(data); // Espera respuesta
 
-      if (response.status === 201) {
-        setMessage("Registro exitoso. Redirigiendo...");
-        setTimeout(() => navigate("/login"), 2000);
-      } else {
-        setMessage(response.data.msg || "Hubo un error en el registro.");
-      }
-    } catch (error) {
-      console.error("Error al registrar usuario:", error);
-      setMessage(
-        error.response?.data?.msg || "Error en el servidor. Intenta de nuevo."
-      );
+    if (response?.error) {
+      setMessage(`❌ Error: ${response.error}`);
+    } else {
+      setMessage("✅ Registro exitoso. Redirigiendo...");
+      setTimeout(() => window.location.href = "/login", 2000); // Redirige al login
     }
   };
 
   return (
     <div>
       <h2>Crear cuenta</h2>
-
+      
       <form onSubmit={sendData}>
         <div>
           <label htmlFor="name">Nombre</label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            required
-            onChange={handleChange}
-          />
+          <input id="name" name="name" type="text" required onChange={handleChange} />
         </div>
 
         <div>
           <label htmlFor="username">Nombre de usuario</label>
-          <input
-            id="username"
-            name="username"
-            type="text"
-            required
-            onChange={handleChange}
-          />
+          <input id="username" name="username" type="text" required onChange={handleChange} />
         </div>
 
         <div>
           <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            onChange={handleChange}
-          />
+          <input id="email" name="email" type="email" required onChange={handleChange} />
         </div>
 
         <div>
           <label htmlFor="password">Contraseña</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            onChange={handleChange}
-          />
+          <input id="password" name="password" type="password" required onChange={handleChange} />
         </div>
 
         <button type="submit">Registrarme</button>
-      </form>
 
-      {message && <p>{message}</p>}
+        {message && <p>{message}</p>} {/* 🔹 Muestra mensaje de éxito o error */}
+      </form>
     </div>
   );
-};
-
-export default Register;
+}
