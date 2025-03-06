@@ -11,6 +11,7 @@ import Us from "./Pages/Information";
 import StoreDetail from "./Pages/StoreDetail";
 import Register from "./Components/Register/Register";
 import Login from "./Components/Login/Login";
+import Profile from "./Components/Profile/Profile";
 
 export const Router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ export const Router = createBrowserRouter([
       { path: "information", element: <Us /> },
       { path: "register", element: <Register /> },
       { path: "login", element: <Login /> },
+      { path: "profile", element: <Profile /> },
     ],
   },
 ]);

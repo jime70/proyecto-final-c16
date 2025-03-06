@@ -2,18 +2,30 @@ const reducers = (globalState, action) => {
   switch (action.type) {
     case "LOGIN_EXITOSO":
     case "REGISTRO_EXITOSO":
-      localStorage.setItem("token", action.payload.token);
+      const { client, token } = action.payload;
+      if (!token) {
+        console.error("❌ No hay token en el payload");
+        return globalState;
+      }
+
+      localStorage.setItem("token", token);
 
       return {
         ...globalState,
         authStatus: true,
+        client,
+        token,
       };
 
     case "OBTENER_CLIENTE":
+      if (!action.payload) {
+        console.error("❌ No se recibió un cliente válido en OBTENER_CLIENTE");
+        return globalState;
+      }
       return {
         ...globalState,
         authStatus: true,
-        user: action.payload,
+        client: action.payload,
       };
 
     case "CERRAR_SESION":
@@ -22,8 +34,9 @@ const reducers = (globalState, action) => {
       return {
         ...globalState,
         client: null,
-        authStatus: null,
+        authStatus: false,
         loading: false,
+        token: null,
       };
 
     default:

@@ -14,29 +14,35 @@ const ClientState = (props) => {
 
   const registerClient = async (dataForm) => {
     try {
-      console.log("Datos enviados al backend para registro:", dataForm);
-      
+      console.log("📤 Enviando datos al backend para registro:", dataForm);
       const res = await clienteAxios.post("/clients/register", dataForm);
-      console.log("Registro exitoso:", res.data);
-
-      const token = res.data.token;
-      if (token) {
-        localStorage.setItem("token", token);
-        clienteAxios.defaults.headers.common["x-auth-token"] = token;
-        await verifyingToken(); 
+      console.log("✅ Registro exitoso:", res.data);
+  
+      const { token, client } = res.data;
+  
+      if (!token) {
+        console.error("❌ No se recibió un token del backend.");
+        return { error: "No se recibió un token del servidor" };
       }
-
+  
+      // 📌 Guarda el token en localStorage
+      localStorage.setItem("token", token);
+      clienteAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  
+      // 📌 Verifica el usuario después del registro
+      await verifyingToken();
+  
       dispatch({
         type: "REGISTRO_EXITOSO",
-        payload: res.data,
+        payload: { client, token },
       });
-
+  
       return { success: true };
     } catch (error) {
-      console.error("Error en el registro:", error.response?.data || error);
+      console.error("❌ Error en el registro:", error.response?.data || error);
       return { error: error.response?.data?.message || "Error en el servidor" };
     }
-  };
+  };  
 
   const verifyingToken = async () => {
     const token = localStorage.getItem("token");
