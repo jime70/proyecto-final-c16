@@ -7,6 +7,7 @@ import {
   Button,
   Box,
   CardActionArea,
+  CardActions,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import ClientContext from "../contexts/clients/ClientContext";
@@ -105,6 +106,9 @@ const Store = () => {
               <CardContent>
                 <Typography variant="h6">{article.name}</Typography>
                 <Typography>Precio: ${article.price}</Typography>
+              </CardContent>
+            </CardActionArea>
+            <CardActions>
                 <Button
                   variant="contained"
                   color="primary"
@@ -124,8 +128,7 @@ const Store = () => {
                     Comprar
                   </Button>
                 )}
-              </CardContent>
-            </CardActionArea>
+            </CardActions>
           </Card>
         ))}
       </Box>
