@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
-import Home from "./Pages/Home";
+import Home from "./Components/Layout/Home";
 import Register from "./Components/Register/Register";
 import Login from "./Components/Login/Login";
 import Store from "./Pages/Store";
@@ -9,19 +9,18 @@ import StoreDetail from "./Pages/StoreDetail";
 import Services from "./Pages/Services";
 import Information from "./Pages/Information";
 import Navbar from "./Components/Navbar";
-import Footer from "./Components/Footer";
+import Footer from "./Components/Layout/Footer";
 import Formulario from "./Pages/Formulario";
 import Profile from "./Components/Profile/Profile";
-import ClientState from "./contexts/clients/ClientState";
+//import ClientState from "./contexts/clients/ClientState";
 
 function App() {
   return (
     <>
       <Navbar />
-      <ClientState> 
-  
+      
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/*" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
@@ -33,7 +32,7 @@ function App() {
           <Route path="/information" element={<Information />} />
         </Routes>
      
-      </ClientState>
+      
       <Footer />
     </>
   );

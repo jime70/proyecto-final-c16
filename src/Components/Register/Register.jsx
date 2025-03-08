@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../config/axios"; // 🔹 Importa axios correctamente
+import axios from "../../config/axios"; 
 import { Box, Container, Typography, Paper, Button, TextField } from "@mui/material";
 
 export default function Register() {
   const navigate = useNavigate();
   
-  // 📌 Estado para manejar los datos del formulario
   const [data, setData] = useState({
     name: "",
     username: "",
@@ -14,28 +13,26 @@ export default function Register() {
     password: "",
   });
 
-  // 📌 Estado para manejar errores o mensajes
+  
   const [message, setMessage] = useState("");
 
-  // 📌 Captura los cambios en los inputs
+  
   const handleChange = (event) => {
     setData({ ...data, [event.target.name]: event.target.value });
   };
 
-  // 📌 Función para enviar el formulario
+  
   const sendData = async (event) => {
     event.preventDefault();
-    setMessage(""); // 🔹 Borra mensajes previos
+    setMessage(""); 
 
     try {
       console.log("📤 Enviando datos al backend:", data);
       
-      // 🔹 Enviar datos al backend
       const res = await axios.post("/clients/register", data);
 
       console.log("✅ Registro exitoso:", res.data);
 
-      // 🔹 Obtener el token y guardarlo en localStorage
       const { token, client } = res.data;
       
       if (!token) {
@@ -44,9 +41,8 @@ export default function Register() {
         return;
       }
 
-      localStorage.setItem("token", token); // 🔹 Guardar token en localStorage
+      localStorage.setItem("token", token); 
 
-      // 🔹 Redirigir a la tienda
       navigate("/store");
       
     } catch (error) {

@@ -1,108 +1,143 @@
-import React, { useContext, useEffect } from "react";
+// import React, { useState } from "react";
+// import axios from "axios";
+
+// export default function Login() {
+//   const [data, setData] = useState({
+//     email: "",
+//     password: "",
+//   });
+
+//   const [message, setMessage] = useState("");
+
+//   const handleChange = (event) => {
+//     setData({
+//       ...data,
+//       [event.target.name]: event.target.value,
+//     });
+//   };
+
+//   const sendData = async (event) => {
+//     event.preventDefault();
+//     setMessage("");
+
+//     try {
+//       console.log("🔍 Enviando datos de login:", data);
+
+//       // 🚀 Hacer la petición sin usar el ClientState
+//       const res = await axios.post("http://localhost:3003/api/clients/client-login", data);
+
+//       console.log("✅ Respuesta del login:", res.data);
+
+//       const token = res.data.token;
+//       if (!token) {
+//         setMessage("❌ No se recibió token. Intenta nuevamente.");
+//         return;
+//       }
+
+//       // 🔹 Guardar el token manualmente en localStorage
+//       localStorage.setItem("token", token);
+//       console.log("📌 Token guardado en localStorage:", token);
+
+//       setMessage("✅ Inicio de sesión exitoso. Redirigiendo...");
+
+//       // 🔹 Redirigir después de 2 segundos
+//       setTimeout(() => {
+//         window.location.href = "/profile";
+//       }, 2000);
+
+//     } catch (error) {
+//       console.error("❌ Error en login:", error.response?.data || error);
+//       setMessage(`❌ Error: ${error.response?.data?.message || "Error en el servidor"}`);
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <h2>Iniciar sesión</h2>
+
+//       <form onSubmit={sendData}>
+//         <div>
+//           <label htmlFor="email">Email</label>
+//           <input id="email" name="email" type="email" required onChange={handleChange} />
+//         </div>
+
+//         <div>
+//           <label htmlFor="password">Contraseña</label>
+//           <input id="password" name="password" type="password" required onChange={handleChange} />
+//         </div>
+
+//         <button type="submit">Ingresar</button>
+
+//         {message && <p>{message}</p>}
+//       </form>
+//     </div>
+//   );
+// }
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ClientContext from "../../contexts/clients/ClientContext";
-import clienteAxios from "../../config/axios";
-import { Box, Container, Typography, Paper, Button } from "@mui/material";
+import axios from "axios";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { verifyingToken } = useContext(ClientContext);
+  const [data, setData] = useState({ email: "", password: "" });
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
+    
     const token = localStorage.getItem("token");
 
     if (token) {
-      clienteAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      verifyingToken();
-      navigate("/profile"); // 🔹 Redirigir al perfil si hay un token en localStorage
+      console.log("✅ Token encontrado en localStorage. Manteniendo sesión activa.");
+      axios.defaults.headers.common["x-auth-token"] = token; 
+      navigate("/store"); 
     }
   }, []);
 
+  const handleChange = (event) => {
+    setData({ ...data, [event.target.name]: event.target.value });
+  };
+
   const sendData = async (event) => {
     event.preventDefault();
-
-    const email = event.target.email.value;
-    const password = event.target.password.value;
+    setMessage("");
 
     try {
-      const res = await clienteAxios.post("/clients/client-login", { email, password });
-
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
-        clienteAxios.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
-
-        navigate("/profile"); // 🔹 Redirigir directamente sin usar useState
-      } else {
-        console.error("Error en el login: No se recibió token");
+      const res = await axios.post("http://localhost:3003/api/clients/client-login", data);
+      
+      const { token } = res.data;
+      if (!token) {
+        setMessage("❌ No se recibió token.");
+        return;
       }
+
+      // ✅ Guardar el token en localStorage
+      localStorage.setItem("token", token);
+      axios.defaults.headers.common["x-auth-token"] = token; // 🔹 Configurar token en todas las peticiones de Axios
+
+      setMessage("✅ Inicio de sesión exitoso. Redirigiendo...");
+      
+      setTimeout(() => navigate("/store"), 2000); // 🔹 Redirigir a Store después de login
+
     } catch (error) {
-      console.error("Error en login:", error.response?.data || error);
+      setMessage(`❌ Error: ${error.response?.data?.message || "Error en el servidor"}`);
     }
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: "80vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: "6rem",
-        marginBottom: "6rem",
-      }}
-    >
-      <Container maxWidth="sm">
-        <Paper elevation={3} sx={{ padding: "2rem", textAlign: "center" }}>
-          <Typography variant="h3" gutterBottom fontWeight={600} color="#2D336B">
-            Iniciar sesión
-          </Typography>
-
-          <form onSubmit={sendData}>
-            <input type="hidden" name="remember" value="true" />
-
-            <Container>
-              <Box sx={{ mb: "1rem" }}>
-                <label htmlFor="email-address">Tu correo</label>
-                <input
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  placeholder="Tu correo"
-                  style={{ width: "100%", padding: "0.5rem" }}
-                />
-              </Box>
-
-              <Box sx={{ mb: "1rem" }}>
-                <label htmlFor="password">Password</label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  placeholder="Password"
-                  style={{ width: "100%", padding: "0.5rem" }}
-                />
-              </Box>
-
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                sx={{
-                  width: "100%",
-                  padding: "0.75rem",
-                  "&:hover": { backgroundColor: "#0d47a1" },
-                }}
-              >
-                Iniciar sesión
-              </Button>
-            </Container>
-          </form>
-        </Paper>
-      </Container>
-    </Box>
+    <div>
+      <h2>Iniciar sesión</h2>
+      <form onSubmit={sendData}>
+        <div>
+          <label htmlFor="email">Email</label>
+          <input id="email" name="email" type="email" required onChange={handleChange} />
+        </div>
+        <div>
+          <label htmlFor="password">Contraseña</label>
+          <input id="password" name="password" type="password" required onChange={handleChange} />
+        </div>
+        <button type="submit">Ingresar</button>
+        {message && <p>{message}</p>}
+      </form>
+    </div>
   );
 }

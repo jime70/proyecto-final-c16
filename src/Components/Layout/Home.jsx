@@ -1,6 +1,6 @@
 import React from "react";
-import Gallery from "../Gallery/Gallery";
-import Carousel from "../Components/Carousel/Carousel";
+import Gallery from "../../Gallery/Gallery";
+import Carousel from "../Carousel/Carousel";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -8,11 +8,10 @@ import Typography from "@mui/material/Typography";
 import { Button, CardMedia } from "@mui/material";
 import Grid2 from "@mui/material/Grid2";
 import { Link } from "react-router-dom";
-import Donations from "../Components/Donations";
-
-import adopcion from "../Images/adopcion.png";
-import juguetes from "../Images/juguetes.png";
-import entrenamiento from "../Images/entrenamiento.jpg";
+import Donations from "../Donations";
+import adopcion from "../../Images/adopcion.png";
+import juguetes from "../../Images/juguetes.png";
+import entrenamiento from "../../Images/entrenamiento.jpg";
 
 const cardData = [
   {

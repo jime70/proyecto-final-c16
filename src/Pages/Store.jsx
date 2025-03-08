@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
   Card,
   CardContent,
@@ -9,6 +9,8 @@ import {
   CardActionArea,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import ClientContext from "../contexts/clients/ClientContext";
+import StoreContext from "../contexts/store/StoreContext";
 
 const getValidImageUrl = (pic) => {
   if (pic.includes("drive.google.com")) {
@@ -22,13 +24,13 @@ const Store = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { authStatus } = useContext(ClientContext);
+  const { addToCart } = useContext(StoreContext);
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3003/api/articles/readall"
-        );
+        const response = await fetch("http://localhost:3003/api/articles/readall");
         if (!response.ok) throw new Error("Error al obtener los artículos");
         const data = await response.json();
         setArticles(data);
@@ -100,28 +102,28 @@ const Store = () => {
                   borderRadius: "8px",
                 }}
               />
-              <div
-                style={{
-                  marginTop: "10px",
-                  display: "flex",
-                  justifyContent: "center",
-                  width: "100%",
-                }}
-              ></div>
               <CardContent>
-                <Typography variant="h6">ID: {article._id}</Typography>
                 <Typography variant="h6">{article.name}</Typography>
                 <Typography>Precio: ${article.price}</Typography>
-
                 <Button
                   variant="contained"
                   color="primary"
                   component={Link}
-                  to={`/store/${article._id}`} // Enlace al detalle del artículo
+                  to={`/store/${article._id}`}
                   state={{ article }}
                 >
                   Ver más
                 </Button>
+                {authStatus && (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    sx={{ marginTop: "10px" }}
+                    onClick={() => addToCart(article)}
+                  >
+                    Comprar
+                  </Button>
+                )}
               </CardContent>
             </CardActionArea>
           </Card>

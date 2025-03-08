@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "./Components/Layout";
+import Layout from "./Components/Layout/Layout";
 import App from "./App";
 import Formulario from "./Pages/Formulario";
 import Catalog from "./Pages/Catalog";
@@ -11,14 +11,17 @@ import Us from "./Pages/Information";
 import StoreDetail from "./Pages/StoreDetail";
 import Register from "./Components/Register/Register";
 import Login from "./Components/Login/Login";
+import Checkout from "./Components/Checkout/Checkout";
 import Profile from "./Components/Profile/Profile";
+import Private from "./routes/Private";
+import Auth from "./routes/Auth";
 
 export const Router = createBrowserRouter([
   {
     path: "/*",
     element: <Layout />,
     children: [
-      { index: true, element: <App /> },  
+      { index: true, element: <App /> },
       { path: "formulario", element: <Formulario /> },
       { path: "catalog", element: <Catalog /> },
       { path: "catalog/:id", element: <CatalogDetail /> },
@@ -26,9 +29,10 @@ export const Router = createBrowserRouter([
       { path: "store/:id", element: <StoreDetail /> },
       { path: "services", element: <Services /> },
       { path: "information", element: <Us /> },
-      { path: "register", element: <Register /> },
-      { path: "login", element: <Login /> },
-      { path: "profile", element: <Profile /> },
+      { path: "register", element: <Auth component={Register} /> },
+      { path: "login", element: <Auth component={Login} /> },
+      { path: "checkout", element: <Private component={Checkout} /> },
+      { path: "profile", element: <Private component={Profile} /> },
     ],
   },
 ]);

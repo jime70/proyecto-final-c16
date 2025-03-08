@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
-import { Typography, Card, CardActionArea, CardContent, Button, Box, CircularProgress } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
+import { Typography, Card, CardActionArea, CardContent, Button, Box, CircularProgress } from "@mui/material";
+import ClientContext from "../contexts/clients/ClientContext";
+import StoreContext from "../contexts/store/StoreContext";
 
 const getValidImageUrl = (pic) => {
   if (!pic) return ""; 
@@ -13,10 +15,11 @@ const getValidImageUrl = (pic) => {
 
 const StoreDetail = () => {
   console.log("🚀 StoreDetail se está renderizando");
-  
-
   const { id } = useParams(); 
   const location = useLocation();
+  const { client, authStatus } = useContext(ClientContext);
+  const { addToCart } = useContext(StoreContext);
+
   const [article, setArticle] = useState(location.state?.article || null);
   const [loading, setLoading] = useState(!article); 
   const [error, setError] = useState(null);
@@ -35,13 +38,9 @@ const StoreDetail = () => {
           setLoading(false);
         }
       };
-
       fetchArticle();
     }
   }, [article, id]);
-
-  console.log("Datos del artículo:", article); // Muestra los datos en la consola
-
 
   if (loading) {
     return (
@@ -80,7 +79,6 @@ const StoreDetail = () => {
             <Typography variant="h4" gutterBottom>
               {article.name}
             </Typography>
-
             <Box display="flex" justifyContent="center" marginBottom="20px">
               <img
                 src={getValidImageUrl(article.pic)}
@@ -93,7 +91,6 @@ const StoreDetail = () => {
                 }}
               />
             </Box>
-
             <Typography variant="h6">ID: {article._id}</Typography>
             <Typography variant="body1" style={{ marginBottom: "10px" }}>
               <strong>Nombre:</strong> {article.name}
@@ -108,6 +105,17 @@ const StoreDetail = () => {
               <strong>Precio:</strong> ${article.price}
             </Typography>
 
+            {authStatus && (
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{ marginTop: 2 }}
+                onClick={() => addToCart(article)}
+              >
+                Comprar
+              </Button>
+            )}
+            
             <Button
               variant="contained"
               color="primary"

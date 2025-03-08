@@ -1,25 +1,77 @@
+// import axios from "axios";
+
+// const backendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3003/api"; // URL del backend
+
+// console.log("✅ Backend URL cargada:", backendURL);
+
+// const clienteAxios = axios.create({
+//   baseURL: backendURL,
+// });
+
+// clienteAxios.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem("token");
+//     if (token) {
+//       config.headers["x-auth-token"] = token;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
+
+// export default clienteAxios;
+
 import axios from "axios";
 
-// Cargar la URL del backend desde las variables de entorno
-const backendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3003/api"; 
+const backendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3003/api"; // URL del backend
 
 console.log("✅ Backend URL cargada:", backendURL);
 
-// Crear instancia de axios
 const clienteAxios = axios.create({
   baseURL: backendURL,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
-// 🔹 Verificar si hay un token en localStorage y agregarlo automáticamente
-const token = localStorage.getItem("token");
-if (token) {
-  console.log("🔹 Token encontrado en localStorage, agregándolo a las peticiones...");
-  clienteAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-} else {
-  console.warn("⚠️ No hay token en localStorage.");
-}
+// Interceptor para agregar el token a cada solicitud
+clienteAxios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers["x-auth-token"] = token;
+    } else {
+      console.warn("⚠️ No se encontró token en localStorage");
+    }
+    return config;
+  },
+  (error) => {
+    console.error("❌ Error en la configuración de la petición:", error);
+    return Promise.reject(error);
+  }
+);
+
+// Interceptor para manejar respuestas con errores globalmente
+clienteAxios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      const { status } = error.response;
+
+      if (status === 401) {
+        console.error("⛔ Sesión expirada. Redirigiendo a login...");
+        localStorage.removeItem("token");
+        window.location.href = "/login"; // O usa React Router: navigate("/login");
+      } else if (status === 403) {
+        console.error("⛔ Acceso prohibido. Verifica permisos.");
+      } else if (status >= 500) {
+        console.error("🔥 Error del servidor. Intenta más tarde.");
+      }
+    } else {
+      console.error("⚠️ Error en la conexión al servidor.");
+    }
+    
+    return Promise.reject(error);
+  }
+);
 
 export default clienteAxios;
