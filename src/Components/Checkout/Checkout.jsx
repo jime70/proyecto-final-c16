@@ -4,6 +4,7 @@ import StoreContext from "../../contexts/store/StoreContext";
 import { Box, Typography, Button, List, ListItem, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
+
 export default function Checkout() {
   const navigate = useNavigate();
   const clientCtx = useContext(ClientContext);

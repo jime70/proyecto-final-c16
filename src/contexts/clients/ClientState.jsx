@@ -1,161 +1,133 @@
-// ./src/context/User/UserState.js
-import { useReducer } from "react";
-
+import React, { useReducer } from "react";
+import clienteAxios from "../../config/axios";
 import ClientReducer from "./ClientReducer";
 import ClientContext from "./ClientContext";
-import axiosClient from "../../config/axios";
-import getToken from "../../config/token";
-import clienteAxios from "../../config/axios";
 
 const ClientState = (props) => {
   const initialState = {
-    currentClient: {
+    currentUser: {
       name: "",
       lastname: "",
       country: "",
       address: "",
       email: "",
-      receipts: [],
       zipcode: 0,
-    },
-    cart: [],
-    authStatus: false,
-    globalLoading: false,
-    sessionURL: null,
+    }, 
   };
 
   const [globalState, dispatch] = useReducer(ClientReducer, initialState);
 
-  const registerClient = async (form) => {
+  const registerClient = async (dataForm) => {
     try {
-      const res = await clienteAxios.post("/clients/register", form);
-      const token = res.data.data;
+      console.log("Registrando cliente con:", dataForm);
+
+      const res = await clienteAxios.post("http://localhost:3003/api/clients/register", dataForm);
+      console.log("Registro exitoso:", res.data);
+
+      const token = res.data.token;
+      if (token) {
+        localStorage.setItem("token", token);
+        clienteAxios.defaults.headers.common["x-auth-token"] = token;
+        await verifyingToken();
+      }
 
       dispatch({
         type: "REGISTRO_EXITOSO",
-        payload: token,
+        payload: res.data,
       });
 
-      return;
+      return { success: true };
     } catch (error) {
-      console.log(error);
-      return error.response.data.msg;
+      console.error("Error en el registro:", error.response?.data || error);
+      return { error: error.response?.data?.message || "Error en el servidor" };
     }
   };
 
-  const loginClient = async (form) => {
-    try {
-      const res = await clienteAxios.post("/clients/client-login", form);
+  const loginClient = async (dataForm) => {
+    console.log("Intentando login con:", dataForm);
 
-      const token = res.data.data;
+    try {
+      const res = await clienteAxios.post("http://localhost:3003/api/clients/client-login", dataForm);
+      console.log("Respuesta del login:", res.data);
+
+      const token = res.data.token;
+      if (!token) {
+        console.error("No se recibió token desde el backend.");
+        return { error: "No se pudo autenticar. Intenta nuevamente." };
+      }
+
+      localStorage.setItem("token", token);
+      clienteAxios.defaults.headers.common["x-auth-token"] = token;
+      console.log("Token guardado en localStorage:", token);
+
+      const verifyResponse = await verifyingToken();
+
+      if (verifyResponse?.error) {
+        return { error: "Error al verificar la sesión. Inicia sesión nuevamente." };
+      }
 
       dispatch({
         type: "LOGIN_EXITOSO",
         payload: token,
       });
 
-      return;
+      return { success: true };
     } catch (error) {
-      return error.response.data.msg;
+      console.error("❌ Error en login:", error.response?.data || error);
+      return { error: error.response?.data?.message || "Error en el servidor" };
     }
   };
 
   const verifyingToken = async () => {
-    getToken();
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.warn("No hay token en localStorage, no se puede verificar.");
+      logout();
+      return { error: "No hay token, inicia sesión nuevamente." };
+    }
+
+    clienteAxios.defaults.headers.common["x-auth-token"] = token;
 
     try {
-      const res = await clienteAxios.get("/clients/verifytoken");
-
-      const clientData = res.data.data;
+      console.log("🔍 Verificando token con el backend...");
+      const res = await clienteAxios.get("http://localhost:3003/api/clients/verifytoken");
+      const clientData = res.data.client;
+      console.log("Cliente verificado:", res.data.client);
 
       dispatch({
-        type: "GET_DATA_USER",
+        type: "OBTENER_CLIENTE",
         payload: clientData,
       });
+
+      return { success: true };
     } catch (error) {
-      return;
+      console.error(" Error en la verificación de token:", error.response?.data || error);
+      logout();
+      return { error: "Sesión no válida, inicia sesión nuevamente." };
     }
   };
 
-  const logoutClient = async () => {
+  const logout = () => {
+    console.log("Cerrando sesión...");
+    localStorage.removeItem("token");
+    delete clienteAxios.defaults.headers.common["x-auth-token"];
+
     dispatch({
-      type: "LOGOUT_USUARIO",
+      type: "CERRAR_SESION",
     });
   };
 
-  const editCart = async (data) => {
-    getToken();
-
-    try {
-      const res = await clienteAxios.put("/checkout/edit-cart", {
-        products: data,
-      });
-
-      await getCart();
-
-      return res.data.msg;
-    } catch (error) {
-      return;
-    }
-  };
-
-  const getCart = async () => {
-    getToken();
-
-    try {
-      const res = await clienteAxios.get("/checkout/get-cart");
-
-      dispatch({
-        type: "GET_CART",
-        payload: res.data.cart.products,
-      });
-    } catch (error) {
-      return;
-    }
-  };
-
-  const setLoading = (status) => {
-    dispatch({
-      type: "CHANGE_STATUS_LOADING",
-      dispatch: status,
-    });
-  };
-
-  const getCheckoutSession = async () => {
-    getToken();
-
-    const res = await clienteAxios.get("checkout/create-checkout-session");
-
-    dispatch({
-      type: "GET_CHECKOUT_SESSION",
-      payload: res.data.session_url,
-    });
-  };
-
-  const clientSubmitForm = async (dataform) => {
-    getToken();
-
-    await axiosClient.put("clients/update", dataform);
-  };
-
-  // 4. RETORNO
   return (
     <ClientContext.Provider
       value={{
-        currentClientr: globalState.currentClient,
-        cart: globalState.cart,
+        client: globalState.client,
         authStatus: globalState.authStatus,
-        globalLoading: globalState.globalLoading,
-        sessionURL: globalState.sessionURL,
+        loading: globalState.loading,
         registerClient,
-        loginClient,
         verifyingToken,
-        logoutClient,
-        editCart,
-        getCart,
-        setLoading,
-        getCheckoutSession,
-        clientSubmitForm,
+        loginClient,
+        logout,
       }}
     >
       {props.children}

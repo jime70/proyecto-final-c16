@@ -1,28 +1,3 @@
-// import axios from "axios";
-
-// const backendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3003/api"; // URL del backend
-
-// console.log("✅ Backend URL cargada:", backendURL);
-
-// const clienteAxios = axios.create({
-//   baseURL: backendURL,
-// });
-
-// clienteAxios.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem("token");
-//     if (token) {
-//       config.headers["x-auth-token"] = token;
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-
-// export default clienteAxios;
-
 import axios from "axios";
 
 const backendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3003/api"; // URL del backend

@@ -18,8 +18,8 @@ const CartState = ({ children }) => {
   }, [state.cart]);
 
   // 📌 Agregar producto al carrito
-  const addToCart = (product) => {
-    dispatch({ type: "ADD_TO_CART", payload: product });
+  const addToCart = (article) => {
+    dispatch({ type: "ADD_TO_CART", payload: article });
   };
 
   // 📌 Eliminar producto del carrito
@@ -27,12 +27,18 @@ const CartState = ({ children }) => {
     dispatch({ type: "REMOVE_FROM_CART", payload: id });
   };
 
+  // 📌 Vaciar el carrito
+  const clearCart = () => {
+    dispatch({ type: "CLEAR_CART" });
+  };
+
   return (
     <CartContext.Provider value={{ 
       cart: state.cart, 
       total: state.total, 
       addToCart, 
-      removeFromCart 
+      removeFromCart,
+      clearCart,
     }}>
       {children}
     </CartContext.Provider>

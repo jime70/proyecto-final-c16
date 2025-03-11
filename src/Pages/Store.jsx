@@ -11,7 +11,10 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import ClientContext from "../contexts/clients/ClientContext";
-import StoreContext from "../contexts/store/StoreContext";
+import CartContext from "../contexts/Cart/CartContext";
+import { useNavigate } from "react-router-dom";
+
+// const navigate = useNavigate();
 
 const getValidImageUrl = (pic) => {
   if (pic.includes("drive.google.com")) {
@@ -25,13 +28,17 @@ const Store = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const { authStatus } = useContext(ClientContext);
-  const { addToCart } = useContext(StoreContext);
+  const { addToCart } = useContext(CartContext); // 🔹 CAMBIADO StoreContext -> CartContext
+  console.log("CartContext:", useContext(CartContext));
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch("http://localhost:3003/api/articles/readall");
+        const response = await fetch(
+          "http://localhost:3003/api/articles/readall"
+        );
         if (!response.ok) throw new Error("Error al obtener los artículos");
         const data = await response.json();
         setArticles(data);
@@ -109,25 +116,29 @@ const Store = () => {
               </CardContent>
             </CardActionArea>
             <CardActions>
+              <Button
+                variant="contained"
+                color="primary"
+                component={Link}
+                to={`/store/${article._id}`}
+                state={{ article }}
+                
+              >
+                Ver más
+              </Button>
+
+              {authStatus && (
                 <Button
-                  variant="contained"
-                  color="primary"
-                  component={Link}
-                  to={`/store/${article._id}`}
-                  state={{ article }}
-                >
-                  Ver más
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  addToCart(article);
+                  navigate("/checkout");
+                }}
+              >
+                  Comprar
                 </Button>
-                {authStatus && (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    sx={{ marginTop: "10px" }}
-                    onClick={() => addToCart(article)}
-                  >
-                    Comprar
-                  </Button>
-                )}
+              )}
             </CardActions>
           </Card>
         ))}

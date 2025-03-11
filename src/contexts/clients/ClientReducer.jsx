@@ -9,7 +9,7 @@ const reducer = (globalState, action) => {
         authStatus: true,
       };
 
-    case "LOGOUT_USUARIO":
+    case "CERRAR_SESION":
       localStorage.removeItem("token");
 
       return {
@@ -21,7 +21,7 @@ const reducer = (globalState, action) => {
         msg: action.payload,
       };
 
-    case "GET_DATA_CLIENT":
+    case "GET_CLIENT_DATA":
       return {
         ...globalState,
         authStatus: true,

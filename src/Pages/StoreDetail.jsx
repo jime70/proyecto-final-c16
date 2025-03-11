@@ -3,6 +3,8 @@ import { useParams, useLocation, Link } from "react-router-dom";
 import { Typography, Card, CardActionArea, CardContent, Button, Box, CircularProgress } from "@mui/material";
 import ClientContext from "../contexts/clients/ClientContext";
 import StoreContext from "../contexts/store/StoreContext";
+import CartContext from "../contexts/Cart/CartContext";
+
 
 const getValidImageUrl = (pic) => {
   if (!pic) return ""; 
@@ -107,11 +109,14 @@ const StoreDetail = () => {
 
             {authStatus && (
               <Button
-                variant="contained"
-                color="secondary"
-                sx={{ marginTop: 2 }}
-                onClick={() => addToCart(article)}
-              >
+              variant="contained"
+              color="secondary"
+              sx={{ marginTop: 2 }}
+              onClick={() => {
+                addToCart(article);
+                navigate("/cart"); // Redirigir al carrito
+              }}
+            >
                 Comprar
               </Button>
             )}
