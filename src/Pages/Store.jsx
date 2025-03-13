@@ -9,12 +9,9 @@ import {
   CardActionArea,
   CardActions,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ClientContext from "../contexts/clients/ClientContext";
 import CartContext from "../contexts/Cart/CartContext";
-import { useNavigate } from "react-router-dom";
-
-// const navigate = useNavigate();
 
 const getValidImageUrl = (pic) => {
   if (pic.includes("drive.google.com")) {
@@ -28,17 +25,22 @@ const Store = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // ✅ Ahora `navigate` está declarado correctamente
 
   const { authStatus } = useContext(ClientContext);
-  const { addToCart } = useContext(CartContext); // 🔹 CAMBIADO StoreContext -> CartContext
-  console.log("CartContext:", useContext(CartContext));
+  const cartContext = useContext(CartContext);
+
+  if (!cartContext) {
+    console.error("CartContext no está disponible. Asegúrate de que CartState está envolviendo la aplicación.");
+    return <p style={{ color: "red" }}>Error: No se pudo cargar el carrito.</p>;
+  }
+
+  const { addToCart } = cartContext;
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3003/api/articles/readall"
-        );
+        const response = await fetch("http://localhost:3003/api/articles/readall");
         if (!response.ok) throw new Error("Error al obtener los artículos");
         const data = await response.json();
         setArticles(data);
@@ -68,7 +70,6 @@ const Store = () => {
       <Typography
         variant="h3"
         textAlign="center"
-        padding="2"
         marginBottom="2rem"
         sx={{
           color: "text.secondary",
@@ -97,7 +98,6 @@ const Store = () => {
               flexDirection: "column",
               alignItems: "center",
             }}
-            sx={{ padding: "10px" }}
           >
             <CardActionArea>
               <img
@@ -122,21 +122,20 @@ const Store = () => {
                 component={Link}
                 to={`/store/${article._id}`}
                 state={{ article }}
-                
               >
                 Ver más
               </Button>
 
               {authStatus && (
                 <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  addToCart(article);
-                  navigate("/checkout");
-                }}
-              >
-                  Comprar
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    addToCart(article);
+                    navigate("/checkout");
+                  }}
+                >
+                  Agregar a carrito
                 </Button>
               )}
             </CardActions>

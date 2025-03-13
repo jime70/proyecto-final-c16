@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import {
   AppBar,
   Box,
@@ -18,7 +18,6 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link, useNavigate } from "react-router-dom";
 import ClientContext from "../contexts/clients/ClientContext";
 import StoreContext from "../contexts/store/StoreContext";
-//import Cart from "../Cart/Cart";
 import logo from "../Images/logo.jpeg";
 
 const pages = [
@@ -51,6 +50,7 @@ function Navbar() {
     <AppBar position="fixed" sx={{ backgroundColor: "#145b86" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          {/* Logo en la versión de escritorio */}
           <Box
             component={Link}
             to="/"
@@ -68,37 +68,26 @@ function Navbar() {
             />
           </Box>
 
+          {/* Menú hamburguesa para dispositivos pequeños */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
+            <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">
               <MenuIcon />
             </IconButton>
-            <Menu
-              anchorEl={anchorElNav}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-            >
+            <Menu anchorEl={anchorElNav} open={Boolean(anchorElNav)} onClose={handleCloseNavMenu}>
               {pages.map((page) => (
-                <MenuItem
-                  key={page.name}
-                  onClick={handleCloseNavMenu}
-                  component={Link}
-                  to={page.path}
-                >
+                <MenuItem key={page.name} onClick={handleCloseNavMenu} component={Link} to={page.path}>
                   {page.name}
                 </MenuItem>
               ))}
             </Menu>
           </Box>
 
+          {/* Nombre del sitio en móvil */}
           <Typography
             variant="h5"
             noWrap
             component={Link}
-            to={"/"}
+            to="/"
             sx={{
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
@@ -112,19 +101,16 @@ function Navbar() {
             RESCATE ANIMAL
           </Typography>
 
+          {/* Menú de navegación en escritorio */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
-                key={page.name}
-                component={Link}
-                to={page.path}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
+              <Button key={page.name} component={Link} to={page.path} sx={{ my: 2, color: "white", display: "block" }}>
                 {page.name}
               </Button>
             ))}
           </Box>
 
+          {/* Ícono del carrito visible solo si está autenticado */}
           {authStatus && (
             <IconButton component={Link} to="/checkout" color="inherit">
               <Badge badgeContent={cart.length} color="secondary">
@@ -133,34 +119,28 @@ function Navbar() {
             </IconButton>
           )}
 
+          {/* Menú del usuario con opciones de login/logout y perfil */}
           <Box sx={{ flexGrow: 0 }}>
             <IconButton onClick={handleOpenUserMenu} color="inherit">
               <AccountCircle />
             </IconButton>
-            <Menu
-              anchorEl={anchorElUser}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
+            <Menu anchorEl={anchorElUser} open={Boolean(anchorElUser)} onClose={handleCloseUserMenu}>
               {!authStatus ? (
                 <>
-                  <MenuItem
-                    component={Link}
-                    to="/register"
-                    onClick={handleCloseUserMenu}
-                  >
+                  <MenuItem component={Link} to="/register" onClick={handleCloseUserMenu}>
                     Registrarse
                   </MenuItem>
-                  <MenuItem
-                    component={Link}
-                    to="/login"
-                    onClick={handleCloseUserMenu}
-                  >
+                  <MenuItem component={Link} to="/login" onClick={handleCloseUserMenu}>
                     Iniciar Sesión
                   </MenuItem>
                 </>
               ) : (
-                <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
+                <>
+                  <MenuItem component={Link} to="/profile" onClick={handleCloseUserMenu}>
+                    Profile
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
+                </>
               )}
             </Menu>
           </Box>
