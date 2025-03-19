@@ -9,21 +9,17 @@ const CartState = ({ children }) => {
   };
 
   const [state, dispatch] = useReducer(CartReducer, initialState);
-
-  // 📌 Calcular el total cada vez que el carrito cambia
-  useEffect(() => {
-    const newTotal = state.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    dispatch({ type: "CALCULATE_TOTAL", payload: newTotal });
-    localStorage.setItem("cart", JSON.stringify(state.cart));
-  }, [state.cart]);
+  
 
   // 📌 Agregar producto al carrito
   const addToCart = (article) => {
+    console.log("🛒 Agregando al carrito:", article);
     dispatch({ type: "ADD_TO_CART", payload: article });
   };
 
   // 📌 Eliminar producto del carrito
   const removeFromCart = (id) => {
+    console.log("❌ Eliminando del carrito:", id);
     dispatch({ type: "REMOVE_FROM_CART", payload: id });
   };
 
@@ -31,6 +27,15 @@ const CartState = ({ children }) => {
   const clearCart = () => {
     dispatch({ type: "CLEAR_CART" });
   };
+
+  // 📌 Guardar el carrito en `localStorage`
+  useEffect(() => {
+    console.log("📦 Carrito actualizado:", state.cart);
+    localStorage.setItem("cart", JSON.stringify(state.cart));
+
+    const newTotal = state.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    dispatch({ type: "CALCULATE_TOTAL", payload: newTotal });
+  }, [state.cart]);
 
   return (
     <CartContext.Provider value={{ 

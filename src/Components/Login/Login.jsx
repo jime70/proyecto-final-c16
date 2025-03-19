@@ -1,12 +1,13 @@
 import { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ClientContext from "../../contexts/clients/ClientContext";
-import { Box, Typography } from "@mui/material";
+import { Box, Container, Typography, Paper, TextField, Button } from "@mui/material";
 
 export default function Login() {
   const navigate = useNavigate();
   const ctx = useContext(ClientContext);
   const { authStatus, loginClient, verifyingToken } = ctx;
+  const [message, setMessage] = useState("");
 
   const [logClient, setLogClient] = useState({
     email: "",
@@ -16,7 +17,6 @@ export default function Login() {
   const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (e) => {
-    e.preventDefault();
     setLogClient({
       ...logClient,
       [e.target.name]: e.target.value,
@@ -31,7 +31,7 @@ export default function Login() {
 
       if (res && res.token) {
         localStorage.setItem("token", res.token);
-        navigate("/profile"); // 🔹 Redirigir inmediatamente después de recibir el token
+        navigate("/store"); // 🔹 Redirigir a Store en lugar de Profile
       } else {
         setErrorMsg("Error en el login: No se recibió token");
       }
@@ -43,9 +43,9 @@ export default function Login() {
   useEffect(() => {
     verifyingToken();
     if (authStatus) {
-      navigate("/profile");
+      navigate("/store"); // 🔹 Redirigir a Store si ya está autenticado
     }
-  }, [authStatus]);
+  }, [authStatus, navigate]);
 
   return (
     <>
@@ -55,50 +55,36 @@ export default function Login() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "100vh", // ✅ Ocupa toda la pantalla
-          paddingTop: "4rem", // ✅ Espacio extra para separar del Navbar
+          minHeight: "100vh", 
+          paddingTop: "4rem", 
         }}
       >
-        <Typography variant="h3" textAlign="center" padding={2} marginBottom="2rem">
-          Iniciar sesión
-        </Typography>
+        <Container maxWidth="sm"> 
+          <Paper elevation={3} sx={{ padding: "2rem", textAlign: "center" }}>
+            <Typography variant="h3" textAlign="center" padding={2} marginBottom="2rem">
+              Iniciar sesión
+            </Typography>
 
-        <Typography variant="body1">
-          ¿Aún sin cuenta?{" "}
-          <Link to="/register" style={{ textDecoration: "none", color: "#1976d2", fontWeight: "bold" }}>
-            Regístrate
-          </Link>
-        </Typography>
+            <Typography variant="body1">
+              ¿Aún sin cuenta?{" "}
+              <Link to="/register" style={{ textDecoration: "none", color: "#1976d2", fontWeight: "bold" }}>
+                Regístrate
+              </Link>
+            </Typography>
 
-        <section>
-          <div>
-            <form onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="email">Tu correo electrónico</label>
-                <div>
-                  <input onChange={handleChange} name="email" type="email" required />
-                </div>
-              </div>
+            {/* 🔹 Agregamos onSubmit para ejecutar handleSubmit */}
+            <form onSubmit={handleSubmit}> 
+              <TextField fullWidth label="Email" name="email" type="email" required onChange={handleChange} margin="normal" />
+              <TextField fullWidth label="Contraseña" name="password" type="password" required onChange={handleChange} margin="normal" />
 
-              <div>
-                <label htmlFor="password">Tu contraseña</label>
-                <div>
-                  <input onChange={handleChange} name="password" type="password" required />
-                </div>
-              </div>
+              <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+                Iniciar sesión
+              </Button>
 
-              <div>
-                <button type="submit">Acceder a tu cuenta</button>
-              </div>
-
-              {errorMsg && (
-                <div>
-                  <p style={{ color: "red" }}>{errorMsg}</p>
-                </div>
-              )}
+              {errorMsg && <Typography color="error" sx={{ mt: 2 }}>{errorMsg}</Typography>}
             </form>
-          </div>
-        </section>
+          </Paper>
+        </Container>
       </Box>
     </>
   );

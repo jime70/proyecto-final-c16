@@ -21,11 +21,11 @@ const reducer = (globalState, action) => {
         msg: action.payload,
       };
 
-    case "GET_CLIENT_DATA":
+    case "OBTENER_CLIENTE":
       return {
         ...globalState,
         authStatus: true,
-        currentUser: action.payload,
+        client: action.payload,
       };
 
     case "GET_CART":

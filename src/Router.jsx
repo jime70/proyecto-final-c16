@@ -15,6 +15,8 @@ import Checkout from "./Components/Checkout/Checkout";
 import Profile from "./Components/Profile/Profile";
 import Private from "./routes/Private";
 import Auth from "./routes/Auth";
+import ProfileEdit from "./Components/Profile/ProfileEdit";
+import Cart from "./Components/Cart/Cart";
 
 export const Router = createBrowserRouter([
   {
@@ -31,8 +33,11 @@ export const Router = createBrowserRouter([
       { path: "information", element: <Us /> },
       { path: "register", element: <Auth component={Register} /> },
       { path: "login", element: <Auth component={Login} /> },
+      { path: "cart", element: <Cart /> },
       { path: "checkout", element: <Private component={Checkout} /> },
       { path: "profile", element: <Private component={Profile} /> },
+      { path: "profile/edit", element: <ProfileEdit /> }, 
+
     ],
   },
 ]);

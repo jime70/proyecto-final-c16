@@ -31,13 +31,13 @@ export default function Register() {
       
       const res = await axios.post("/clients/register", data);
 
-      console.log("✅ Registro exitoso:", res.data);
+      console.log("Registro exitoso:", res.data);
 
       const { token, client } = res.data;
       
       if (!token) {
-        console.error("❌ No se recibió token del backend.");
-        setMessage("❌ Error en el registro: No se recibió un token.");
+        console.error("No se recibió token del backend.");
+        setMessage("Error en el registro: No se recibió un token.");
         return;
       }
 
@@ -46,7 +46,7 @@ export default function Register() {
       navigate("/store");
       
     } catch (error) {
-      console.error("❌ Error en el registro:", error.response?.data || error);
+      console.error("Error en el registro:", error.response?.data || error);
       setMessage(`❌ ${error.response?.data?.message || "Error en el servidor"}`);
     }
   };

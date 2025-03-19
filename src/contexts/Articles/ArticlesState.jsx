@@ -20,7 +20,7 @@ const ArticleState = (props) => {
   const [globalState, dispatch] = useReducer(ArticleReducer, initialState);
 
   const getArticles = async () => {
-    const res = await clienteAxios.get("/pizzas/readall");
+    const res = await clienteAxios.get("/articles/readall");
 
     const articles = res.data.data;
 
@@ -32,7 +32,7 @@ const ArticleState = (props) => {
 
   const getArticle = async (id) => {
     try {
-      const res = await clienteAxios.get(`/pizzas/readone/${id}`);
+      const res = await clienteAxios.get(`/articles/readone/${id}`);
 
       dispatch({
         type: "OBTENER_ARTICULO",

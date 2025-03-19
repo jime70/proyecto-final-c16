@@ -1,8 +1,6 @@
 import { Typography, Card, CardActionArea, CardContent, Button, Box, CircularProgress, Grid2 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Link } from "react-router-dom";
-
+import { useLocation, Link } from 'react-router-dom';
 
 export const CatalogDetail = () => {
   const location = useLocation();
@@ -10,13 +8,18 @@ export const CatalogDetail = () => {
 
   const [loading, setLoading] = useState(true);
 
+  const cleanText = (text) => {
+    if (!text) return "";
+    return text.replace(/<\/?p>/g, "");
+  };
+
   useEffect(() => {
     if (animal) {
       setTimeout(() => {
-        setLoading(false); 
-      }, 1000); 
+        setLoading(false);
+      }, 1000);
     } else {
-      setLoading(false); 
+      setLoading(false);
     }
   }, [animal]);
 
@@ -77,13 +80,13 @@ export const CatalogDetail = () => {
                 Comuna: {animal.comuna}
               </Typography>
               <Typography variant="body1" style={{ marginBottom: '10px' }}>
-                Descripción Física: {animal.desc_fisica}
+                Descripción Física: {cleanText(animal.desc_fisica)}
               </Typography>
               <Typography variant="body1" style={{ marginBottom: '10px' }}>
-                Descripción Personalidad: {animal.desc_personalidad}
+                Descripción Personalidad: {cleanText(animal.desc_personalidad)}
               </Typography>
               <Typography variant="body1" style={{ marginBottom: '20px' }}>
-                Imágenes: 
+                Imágenes:
                 <Button
                   onClick={() => window.open(animal.url, '_blank')}
                   variant="text"
@@ -95,7 +98,6 @@ export const CatalogDetail = () => {
 
               <Button
                 variant="contained"
-                href="#contained-buttons"
                 component={Link}
                 to={`/formulario`}
                 state={{ animal }}
@@ -106,7 +108,6 @@ export const CatalogDetail = () => {
               <Button
                 variant="contained"
                 color="success"
-                href="#contained-buttons"
                 style={{ marginLeft: '20px' }}
                 component={Link}
                 to={`/catalog`}
