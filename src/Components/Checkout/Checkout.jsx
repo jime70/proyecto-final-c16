@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ClientContext from "../../contexts/clients/ClientContext";
 import CartContext from "../../contexts/Cart/CartContext"; 
 import { Box, Typography, Button, List, ListItem, ListItemText } from "@mui/material";
+import { handlePayment } from "../Cart/payment";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -15,49 +16,6 @@ const Checkout = () => {
       navigate("/login");
     }
   }, [authStatus, navigate]);
-
-  const handlePayment = async () => {
-    if (!cart || cart.length === 0) {
-      alert("⚠️ El carrito está vacío. No se puede proceder con el pago.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        alert("No se encontró el token. Inicia sesión nuevamente.");
-        navigate("/login");
-        return;
-      }
-
-      const formattedCart = cart.map(item => ({
-        priceID: item.priceID, // 🔹 Se debe usar el priceID de Stripe
-        quantity: item.quantity
-      }));
-
-      const response = await fetch("http://localhost:3003/api/checkout/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token, 
-        },
-        body: JSON.stringify({ cart: formattedCart }),  // 🔥 Enviar carrito al backend
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.sessionURL) {
-        window.location.href = data.sessionURL; // 🚀 Redirigir a Stripe
-      } else {
-        alert("Error al procesar el pago. Inténtalo de nuevo.");
-      }
-    } catch (error) {
-      alert("Hubo un error al conectar con el servidor.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const formatPriceCLP = (price) => {
     return new Intl.NumberFormat("es-CL", {
@@ -77,8 +35,8 @@ const Checkout = () => {
       {cart.length > 0 ? (
         <>
           <List>
-            {cart.map((item) => (
-              <ListItem key={item._id} divider>
+            {cart.map((item, index) => (
+              <ListItem key={`${item._id}-${index}`} divider>
                 <ListItemText
                   primary={item.name}
                   secondary={`Cantidad: ${item.quantity} - Precio: ${formatPriceCLP(item.price)}`}
@@ -95,7 +53,7 @@ const Checkout = () => {
             variant="contained"
             color="primary"
             sx={{ marginTop: 3 }}
-            onClick={handlePayment}
+            onClick={() => handlePayment(cart, setLoading, navigate)}
             disabled={loading}
           >
             {loading ? "Procesando..." : "Pagar con Stripe"}

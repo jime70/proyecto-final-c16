@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import ClientContext from "../contexts/clients/ClientContext";
 import CartContext from "../contexts/Cart/CartContext";
+import axios from "axios"
 
 const getValidImageUrl = (pic) => {
   if (!pic) return "";
@@ -32,6 +33,41 @@ const StoreDetail = () => {
   const [article, setArticle] = useState(location.state?.article || null);
   const [loading, setLoading] = useState(!article);
   const [error, setError] = useState(null);
+
+  const productToBack = {
+    productName: article.title,
+    productDescription: article.description,
+    productPrice: article.price,
+    productQuantity: 1,
+    imageUrl: article.image,
+    currency: "CLP",
+    line_items: [
+      {
+        price: article.price,
+        quantity: 1,
+        name: article.title,
+      },
+    ],
+  };
+
+  const handleSendToBack = async () => {
+    try {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
+      const response = await axios.post(
+        `${backendUrl}/payment/create-checkout-session`,
+        productToBack 
+      );
+      if (response.data && response.data.url) {
+        window.location.href = response.data.url;
+      } else {
+        console.error("Error creating checkout session");
+      }
+    }
+    catch (err) {
+      console.error("Error al enviar al carrito de regreso", err);
+    }
+  }
+  
 
   useEffect(() => {
     if (!article) {
@@ -182,11 +218,14 @@ const StoreDetail = () => {
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => {
-                console.log("🛒 Agregando desde StoreDetail:", article);
-                addToCart(article);
-                navigate("/cart"); // Redirigir al carrito
-              }}
+              onClick={handleSendToBack}
+              // variant="contained"
+              // color="secondary"
+              // onClick={() => {
+              //   console.log("🛒 Agregando desde StoreDetail:", article);
+              //   addToCart(article);
+              //   navigate("/cart"); // Redirigir al carrito
+              // }}
             >
               Comprar
             </Button>

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
   Box,
   Typography,
@@ -9,10 +9,12 @@ import {
 } from "@mui/material";
 import CartContext from "../../contexts/Cart/CartContext";
 import { useNavigate } from "react-router-dom";
+import { handlePayment } from "./payment";
 
 const Cart = () => {
   const navigate = useNavigate();
   const { cart, total, removeFromCart } = useContext(CartContext);
+  const [loading, setLoading] = useState(false);
 
   const formatPriceCLP = (price) => {
     return new Intl.NumberFormat("es-CL", {
@@ -36,7 +38,9 @@ const Cart = () => {
               <ListItem key={article._id} divider>
                 <ListItemText
                   primary={article.name}
-                  secondary={`Cantidad: ${article.quantity} - Precio: ${formatPriceCLP(article.price)}`}
+                  secondary={`Cantidad: ${
+                    article.quantity
+                  } - Precio: ${formatPriceCLP(article.price)}`}
                 />
                 <Button
                   variant="outlined"
@@ -57,7 +61,7 @@ const Cart = () => {
             variant="contained"
             color="primary"
             sx={{ marginTop: 3 }}
-            onClick={() => navigate("/checkout")} 
+            onClick={() => handlePayment(cart, setLoading, navigate)}
           >
             Ir a Pagar
           </Button>
