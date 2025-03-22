@@ -17,6 +17,8 @@ import Private from "./routes/Private";
 import Auth from "./routes/Auth";
 import ProfileEdit from "./Components/Profile/ProfileEdit";
 import Cart from "./Components/Cart/Cart";
+import Success from "./Components/Success";
+import Cancel from "./Components/Cancel";
 
 export const Router = createBrowserRouter([
   {
@@ -37,7 +39,8 @@ export const Router = createBrowserRouter([
       { path: "checkout", element: <Private component={Checkout} /> },
       { path: "profile", element: <Private component={Profile} /> },
       { path: "profile/edit", element: <ProfileEdit /> }, 
-
+      { path: "checkout-success", element: <Success /> }, 
+      { path: "checkout-cancel", element: <Cancel /> },
     ],
   },
 ]);

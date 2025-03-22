@@ -50,7 +50,7 @@ function Navbar() {
     <AppBar position="fixed" sx={{ backgroundColor: "#145b86" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* Logo en la versión de escritorio */}
+        
           <Box
             component={Link}
             to="/"
@@ -68,7 +68,6 @@ function Navbar() {
             />
           </Box>
 
-          {/* Menú hamburguesa para dispositivos pequeños */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">
               <MenuIcon />
@@ -82,7 +81,6 @@ function Navbar() {
             </Menu>
           </Box>
 
-          {/* Nombre del sitio en móvil */}
           <Typography
             variant="h5"
             noWrap
@@ -101,7 +99,6 @@ function Navbar() {
             RESCATE ANIMAL
           </Typography>
 
-          {/* Menú de navegación en escritorio */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button key={page.name} component={Link} to={page.path} sx={{ my: 2, color: "white", display: "block" }}>
@@ -110,7 +107,6 @@ function Navbar() {
             ))}
           </Box>
 
-          {/* Ícono del carrito visible solo si está autenticado */}
           {authStatus && (
             <IconButton component={Link} to="/checkout" color="inherit">
               <Badge badgeContent={cart.length} color="secondary">
@@ -119,7 +115,6 @@ function Navbar() {
             </IconButton>
           )}
 
-          {/* Menú del usuario con opciones de login/logout y perfil */}
           <Box sx={{ flexGrow: 0 }}>
             <IconButton onClick={handleOpenUserMenu} color="inherit">
               <AccountCircle />

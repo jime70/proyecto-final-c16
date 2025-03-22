@@ -12,7 +12,7 @@ import Navbar from "./Components/Navbar";
 import Footer from "./Components/Layout/Footer";
 import Formulario from "./Pages/Formulario";
 import Profile from "./Components/Profile/Profile";
-import Cart from "./Components/Cart/Cart";  // 🔹 Importar el carrito
+import Cart from "./Components/Cart/Cart";  
 
 function App() {
   return (
@@ -29,9 +29,9 @@ function App() {
         <Route path="/store/:id" element={<StoreDetail />} />
         <Route path="/services" element={<Services />} />
         <Route path="/information" element={<Information />} />
-        <Route path="/cart" element={<Cart />} />  {/* ✅ Agregado aquí también */}
+        <Route path="/cart" element={<Cart />} />  
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import ClientContext from "../contexts/clients/ClientContext";
-import CartContext from "../contexts/Cart/CartContext"; // Asegurar que se importa
+import CartContext from "../contexts/Cart/CartContext"; 
 
 const Store = () => {
   const [articles, setArticles] = useState([]);
@@ -20,7 +20,7 @@ const Store = () => {
   const navigate = useNavigate();
 
   const { authStatus } = useContext(ClientContext);
-  const { addToCart, cart } = useContext(CartContext); // Asegurar que `addToCart` está disponible
+  const { addToCart, cart } = useContext(CartContext); 
 
   useEffect(() => {
     const fetchArticles = async () => {

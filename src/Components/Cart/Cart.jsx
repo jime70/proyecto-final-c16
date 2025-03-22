@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import CartContext from "../../contexts/Cart/CartContext";
 import { useNavigate } from "react-router-dom";
-import { handlePayment } from "./payment";
+import axios from "axios";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -25,6 +25,60 @@ const Cart = () => {
     }).format(price);
   };
 
+  const handleSendToBack = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Debes iniciar sesión para realizar el pago");
+        return;
+      }
+
+      const formattedCart = cart.map((item) => {
+        if (!item.priceID) {
+          console.error(`⛔ El producto "${item.name}" no tiene un priceID.`);
+          return null; 
+        }
+        return {
+          price: item.priceID, 
+          quantity: item.quantity,
+        };
+      }).filter(Boolean); 
+
+      if (formattedCart.length === 0) {
+        alert("El carrito está vacío o contiene productos sin priceID.");
+        return;
+      }
+
+      setLoading(true);
+
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
+      console.log("🌐 Backend URL:", backendUrl); // ➤ Debe mostrar http://localhost:3003/api
+
+      const response = await axios.post(
+        `http://localhost:3003/api/checkout/create-checkout-session`,
+        { cart: formattedCart },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
+          },
+        }
+      );
+
+      if (response.data && response.data.sessionURL) {
+        window.location.href = response.data.sessionURL;
+      } else {
+        console.error("Error creando sesión:", response.data);
+        alert("No se pudo iniciar el pago.");
+      }
+    } catch (err) {
+      console.error("❌ Error al enviar carrito:", err);
+      alert("Error al conectar con el servidor.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box padding={6} textAlign="center" sx={{ marginTop: "6rem" }}>
       <Typography variant="h3" gutterBottom>
@@ -38,9 +92,7 @@ const Cart = () => {
               <ListItem key={article._id} divider>
                 <ListItemText
                   primary={article.name}
-                  secondary={`Cantidad: ${
-                    article.quantity
-                  } - Precio: ${formatPriceCLP(article.price)}`}
+                  secondary={`Cantidad: ${article.quantity} - Precio: ${formatPriceCLP(article.price)}`}
                 />
                 <Button
                   variant="outlined"
@@ -61,9 +113,10 @@ const Cart = () => {
             variant="contained"
             color="primary"
             sx={{ marginTop: 3 }}
-            onClick={() => handlePayment(cart, setLoading, navigate)}
+            onClick={handleSendToBack}
+            disabled={loading}
           >
-            Ir a Pagar
+            {loading ? "Procesando..." : "Ir a Pagar"}
           </Button>
         </>
       ) : (

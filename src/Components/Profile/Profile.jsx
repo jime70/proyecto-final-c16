@@ -12,19 +12,19 @@ const Profile = () => {
     if (!authStatus) {
       navigate("/login");
     } else if (!client) {
-      getClientData(); // 📌 Obtener datos cuando se carga la página
+      getClientData(); 
     }
   }, [authStatus, navigate, getClientData]);
 
   return (
     <Container maxWidth="md" sx={{ marginTop: "6rem", marginBottom: "6rem" }}>
       <Paper elevation={3} sx={{ padding: "2rem", textAlign: "center" }}>
-        {/* ✅ Título con nombre del cliente */}
+       
         <Typography variant="h4" gutterBottom color="primary">
           {client?.name ? `Hola, ${client.name}!` : "Cargando datos..."}
         </Typography>
 
-        {/* ✅ Información del cliente en formato eCommerce */}
+        
         {client ? (
           <Box sx={{ textAlign: "left", marginTop: "1rem" }}>
             <Typography variant="h6"><strong>Nombre:</strong> {client.name}</Typography>
@@ -38,12 +38,12 @@ const Profile = () => {
           <Typography>Cargando datos...</Typography>
         )}
 
-        {/* ✅ Botón para actualizar datos */}
+      
         <Button
           variant="contained"
           color="primary"
           sx={{ marginTop: "2rem" }}
-          onClick={() => navigate("/profile/edit")} // 📌 Redirigir al formulario de edición
+          onClick={() => navigate("/profile/edit")} 
         >
           Actualizar datos
         </Button>

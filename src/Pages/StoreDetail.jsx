@@ -34,39 +34,39 @@ const StoreDetail = () => {
   const [loading, setLoading] = useState(!article);
   const [error, setError] = useState(null);
 
-  const productToBack = {
-    productName: article.title,
-    productDescription: article.description,
-    productPrice: article.price,
-    productQuantity: 1,
-    imageUrl: article.image,
-    currency: "CLP",
-    line_items: [
-      {
-        price: article.price,
-        quantity: 1,
-        name: article.title,
-      },
-    ],
-  };
+  // const productToBack = {
+  //   productName: article.title,
+  //   productDescription: article.description,
+  //   productPrice: article.price,
+  //   productQuantity: 1,
+  //   imageUrl: article.image,
+  //   currency: "CLP",
+  //   line_items: [
+  //     {
+  //       price: article.price,
+  //       quantity: 1,
+  //       name: article.title,
+  //     },
+  //   ],
+  // };
 
-  const handleSendToBack = async () => {
-    try {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL;
-      const response = await axios.post(
-        `${backendUrl}/payment/create-checkout-session`,
-        productToBack 
-      );
-      if (response.data && response.data.url) {
-        window.location.href = response.data.url;
-      } else {
-        console.error("Error creating checkout session");
-      }
-    }
-    catch (err) {
-      console.error("Error al enviar al carrito de regreso", err);
-    }
-  }
+  // const handleSendToBack = async () => {
+  //   try {
+  //     const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  //     const response = await axios.post(
+  //       `${backendUrl}/payment/create-checkout-session`,
+  //       productToBack 
+  //     );
+  //     if (response.data && response.data.url) {
+  //       window.location.href = response.data.url;
+  //     } else {
+  //       console.error("Error creating checkout session");
+  //     }
+  //   }
+  //   catch (err) {
+  //     console.error("Error al enviar al carrito de regreso", err);
+  //   }
+  // }
   
 
   useEffect(() => {
@@ -137,9 +137,7 @@ const StoreDetail = () => {
           p: 2,
         }}
       >
-        {/* Sección superior con imagen y detalles */}
         <Box sx={{ display: "flex" }}>
-          {/* Imagen a la izquierda */}
           <Box
             sx={{
               display: "flex",
@@ -162,7 +160,6 @@ const StoreDetail = () => {
             />
           </Box>
 
-          {/* Detalles a la derecha */}
           <Box
             sx={{
               display: "flex",
@@ -218,7 +215,7 @@ const StoreDetail = () => {
             <Button
               variant="contained"
               color="secondary"
-              onClick={handleSendToBack}
+              // onClick={handleSendToBack}
               // variant="contained"
               // color="secondary"
               // onClick={() => {

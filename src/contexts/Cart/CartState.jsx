@@ -11,24 +11,20 @@ const CartState = ({ children }) => {
   const [state, dispatch] = useReducer(CartReducer, initialState);
   
 
-  // 📌 Agregar producto al carrito
   const addToCart = (article) => {
     console.log("🛒 Agregando al carrito:", article);
     dispatch({ type: "ADD_TO_CART", payload: article });
   };
 
-  // 📌 Eliminar producto del carrito
   const removeFromCart = (id) => {
     console.log("❌ Eliminando del carrito:", id);
     dispatch({ type: "REMOVE_FROM_CART", payload: id });
   };
 
-  // 📌 Vaciar el carrito
   const clearCart = () => {
     dispatch({ type: "CLEAR_CART" });
   };
 
-  // 📌 Guardar el carrito en `localStorage`
   useEffect(() => {
     console.log("📦 Carrito actualizado:", state.cart);
     localStorage.setItem("cart", JSON.stringify(state.cart));

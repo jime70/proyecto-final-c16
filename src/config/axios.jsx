@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const backendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3003/api"; // URL del backend
+const backendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3003/api"; 
 
 console.log("✅ Backend URL cargada:", backendURL);
 
@@ -8,7 +8,6 @@ const clienteAxios = axios.create({
   baseURL: backendURL,
 });
 
-// Interceptor para agregar el token a cada solicitud
 clienteAxios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -25,7 +24,6 @@ clienteAxios.interceptors.request.use(
   }
 );
 
-// Interceptor para manejar respuestas con errores globalmente
 clienteAxios.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -35,7 +33,7 @@ clienteAxios.interceptors.response.use(
       if (status === 401) {
         console.error("⛔ Sesión expirada. Redirigiendo a login...");
         localStorage.removeItem("token");
-        window.location.href = "/login"; // O usa React Router: navigate("/login");
+        window.location.href = "/login"; 
       } else if (status === 403) {
         console.error("⛔ Acceso prohibido. Verifica permisos.");
       } else if (status >= 500) {

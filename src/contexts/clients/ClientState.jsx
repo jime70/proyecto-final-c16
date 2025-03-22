@@ -73,7 +73,7 @@ const ClientState = (props) => {
         payload: token,
       });
 
-      return { success: true };
+      return { success: true, token };
     } catch (error) {
       console.error("❌ Error en login:", error.response?.data || error);
       return { error: error.response?.data?.message || "Error en el servidor" };

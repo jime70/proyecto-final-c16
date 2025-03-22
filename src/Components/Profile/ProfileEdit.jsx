@@ -12,16 +12,14 @@ const ProfileEdit = () => {
   const clientCtx = useContext(ClientContext);
   const { client, authStatus, getClientData, clientSubmitForm } = clientCtx;
 
-  // Redirigir al login si no está autenticado
   useEffect(() => {
     if (!authStatus) {
       navigate("/login");
     } else {
-      getClientData(); // Obtener los datos del cliente al cargar la página
+      getClientData(); 
     }
   }, [authStatus, navigate, getClientData]);
 
-  // Estado del formulario con los datos del cliente
   const [clientForm, setClientForm] = useState({
     _id: "",
     name: "",
@@ -32,7 +30,6 @@ const ProfileEdit = () => {
     zipcode: "",
   });
 
-  // Llenar el formulario con los datos del cliente
   useEffect(() => {
     if (client) {
       setClientForm({
@@ -47,7 +44,6 @@ const ProfileEdit = () => {
     }
   }, [client]);
 
-  // Manejar cambios en los inputs
   const handleChange = (event) => {
     setClientForm({
       ...clientForm,
@@ -55,7 +51,6 @@ const ProfileEdit = () => {
     });
   };
 
-  // Enviar datos actualizados al backend
   const sendData = async (event) => {
     event.preventDefault();
 
@@ -69,7 +64,7 @@ const ProfileEdit = () => {
       show: true,
       msg: "Usuario actualizado correctamente",
       cta: "Cerrar",
-      ctaURL: "/profile", // 🔹 Redirigir al perfil después de actualizar
+      ctaURL: "/profile", 
     });
 
     navigate("/profile");
@@ -125,7 +120,6 @@ const ProfileEdit = () => {
             />
           </Box>
 
-          {/* Botón para guardar cambios */}
           <Button
             type="submit"
             variant="contained"
@@ -135,7 +129,7 @@ const ProfileEdit = () => {
             Guardar cambios
           </Button>
 
-          {/* Botón para regresar sin modificar */}
+         
           <Button
             variant="outlined"
             color="secondary"

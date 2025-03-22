@@ -13,6 +13,7 @@ const Footer = () => {
             backgroundColor: '#143D60', 
             color: 'white',
             fontSize: '0.875rem',
+            mt: 'auto',
         }}
         >
         © 2025 Fake Fundación de Adopción - Propiedad intelectual de Jimena Espinoza - Cohorte 16 - Página creada con fines académicos
