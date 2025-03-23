@@ -1,32 +1,45 @@
-Aquí tienes una versión ampliada del `README.md` que explica cómo se implementan los archivos y componentes en tu proyecto. El enfoque está en detallar la funcionalidad y el propósito de cada componente, con ejemplos de uso cuando sea relevante.
 
----
 
-# Proyecto 5: Aplicación Web con React
+# Proyecto Final: Implementación de un e-commerce usando React - FRONTEND
 
 ## Tabla de Contenidos
-1. [Requisitos](#requisitos)  
-2. [Introducción](#introducción)  
-3. [Instalación](#instalación)  
-4. [Estructura del Proyecto](#estructura-del-proyecto)  
-5. [Implementación de Archivos y Componentes](#implementación-de-archivos-y-componentes)  
-6. [Funcionamiento](#funcionamiento)  
+- [Proyecto Final: Implementación de un e-commerce usando React - FRONTEND](#proyecto-final-implementación-de-un-e-commerce-usando-react---frontend)
+  - [Tabla de Contenidos](#tabla-de-contenidos)
+  - [Requisitos](#requisitos)
+  - [Introducción](#introducción)
+  - [Instalación](#instalación)
+  - [Implementación de Archivos y Componentes](#implementación-de-archivos-y-componentes)
+      - [1.1. `Router.jsx`](#11-routerjsx)
+      - [1.2. `main.jsx`](#12-mainjsx)
+      - [1.3. `Pages`](#13-pages)
+      - [1.4. `contexts`](#14-contexts)
+    - [2. **Otras carpetas**](#2-otras-carpetas)
+      - [2.1. `config`](#21-config)
+    - [2.2.  `components`](#22--components)
 
 ---
 
 ## Requisitos
-- React
+- React JS
 - Vite
 - Material UI
 - React Router DOM
+- Axios para consumo de APIs
+- Stripe Checkout para procesar pagos
 
 ---
 
 ## Introducción
-En este proyecto se construyó una aplicación web que consume datos de una API pública para mostrar información sobre animales disponibles para adopción. Incluye funcionalidades como:
-- Conexión con una API externa.
-- Mostrar datos en una interfaz visualmente atractiva.
-- Interacción del usuario mediante formularios y botones.
+El frontend de esta aplicación fue desarrollado con React JS utilizando Vite como entorno de desarrollo rápido. La interfaz permite a los usuarios navegar por un catálogo de productos, iniciar sesión o registrarse, gestionar su perfil y realizar compras a través de la pasarela de pagos Stripe. Además, consume una API externa para mostrar animales disponibles para adopción. 
+
+**Funcionalidades principales**
+•	Registro e inicio de sesión de clientes
+•	Visualización de productos por categoría
+•	Visualización de animales rescatados (desde API externa)
+•	Carrito de compras
+•	Proceso de pago con Stripe
+•	Acceso a perfil privado (sólo para usuarios logueados)
+•	Rutas protegidas según autenticación
 
 ---
 
@@ -37,7 +50,7 @@ En este proyecto se construyó una aplicación web que consume datos de una API 
    ```
 2. **Acceder al directorio del proyecto:**
    ```bash
-   cd proyecto-module5-c16
+   cd PROYECTO7-BACKEND-FRONTEND
    ```
 3. **Instalar las dependencias:**
    ```bash
@@ -45,9 +58,16 @@ En este proyecto se construyó una aplicación web que consume datos de una API 
    ```
 4. **Configurar el archivo `.env`:**
    Crear un archivo `.env` con el siguiente contenido:
-   ```
-   VITE_ANIMAL_API_URL=https://huachitos.cl/api/animales
-   ```
+```	
+1. API externa – Animales rescatados
+URL: https://huachitos.cl/api/animales
+Se utiliza para mostrar animales en adopción dentro de la sección de rescate a través de: VITE_ANIMAL_API_URL=https://huachitos.cl/api/animales
+
+2. API interna – Backend propio
+URL base: http://localhost:3003/api 
+Utilizada para manejar artículos, clientes, carritos y pagos, a través de:
+VITE_BACKEND_URL=http://localhost:3003/api
+```	
 5. **Ejecutar la aplicación:**
    ```bash
    npm run dev
@@ -55,132 +75,98 @@ En este proyecto se construyó una aplicación web que consume datos de una API 
 
 ---
 
-## Estructura del Proyecto
-
-```plaintext
-📦 Proyecto-module5-c16
-├── 📂 src
-│   ├── 📂 components
-│   │   ├── AnimalFinder.jsx
-│   │   ├── Carousel.css
-│   │   ├── Carousel.jsx
-│   │   ├── ErrorBoundary.jsx
-│   │   ├── Footer.jsx
-│   │   ├── Navbar.jsx
-│   │   ├── Layout.jsx
-│   ├── 📂 Helpers
-│   │   ├── CarouselData.js
-│   ├── 📂 hooks
-│   │   ├── UseFetchAnimal.js
-│   ├── 📂 Images
-│   ├── 📂 pages
-│   │   ├── Catalog.jsx
-│   │   ├── CatalogDetail.jsx
-│   │   ├── Formulario.jsx
-├── 📜 .env
-├── 📜 App.css
-├── 📜 App.jsx
-├── 📜 Router.jsx
-```
-
 ---
 
 ## Implementación de Archivos y Componentes
 
-#### 1.1. `Carousel.jsx`
-Muestra un carrusel de imágenes con información de los animales en adopción. Utiliza un estado interno para controlar la navegación entre imágenes.
-
-**Características:**
-- Cambiar entre imágenes con botones.
-- Importación de datos de `CarouselData.js`.
-
-**Ejemplo de navegación:**
-```jsx
-<button onClick={handleNext}>Siguiente</button>
-<button onClick={handlePrev}>Anterior</button>
+#### 1.1. `Router.jsx`
+El archivo Router.jsx define la estructura de navegación de la aplicación usando React Router DOM. En este archivo se configuran las rutas principales que conectan las URLs del navegador con los distintos componentes o páginas del frontend.
+Funciones principales:
+```
+•	Establece rutas públicas como /, /store, /login, /register, etc.
+•	Define rutas privadas como /profile o /checkout, protegidas mediante un componente de autenticación.
 ```
 
 ---
 
-#### 1.2. `ErrorBoundary.jsx`
-Este componente es una clase que envuelve otros componentes para capturar errores y mostrar un mensaje amigable al usuario.
+#### 1.2. `main.jsx`
+Tiene como funciones principales:
+- Renderiza el componente raíz <App /> dentro del elemento HTML con id="root".
+- Envuelve la app con proveedores globales, como:
+  
+<ClientProvider> para manejar la autenticación del cliente (si usas ClientContext).
+<BrowserRouter> para habilitar la navegación con React Router.
 
-**Características:**
-- Muestra una imagen de error personalizada, sin que se colapse el servidor.
+Importa estilos globales o CSS base (si es necesario).
+Es un archivo fundamental que inicializa y monta toda la estructura del frontend en React.
 
----
 
-#### 1.3. `Navbar.jsx`
-Barra de navegación fija en la parte superior, diseñada con Material UI, que permite moverse entre las diferentes secciones de la aplicación.
+#### 1.3. `Pages`
+La carpeta /pages agrupa los componentes principales de vista que representan cada página completa del sitio web. Cada archivo dentro de esta carpeta corresponde directamente a una ruta definida en el Router.jsx.
 
-**Ejemplo de rutas:**
-```jsx
-<Button component={Link} to="/catalog">Catálogo</Button>
-<Button component={Link} to="/formulario">Formulario</Button>
-```
+**Funciones principales:**
+•	Organizar las distintas pantallas completas de la aplicación (ej. Home, Login, Register, Store).
+•	Facilitar la navegación del usuario a través de React Router.
+•	Encapsular la lógica, estructura y estilos propios de cada sección.
 
----
+**Ejemplos de componentes en /pages:**
+•	Home.jsx: Página principal de bienvenida o presentación.
+•	Store.jsx: Catálogo de productos disponibles para compra.
+•	StoreDetail.jsx: Vista detallada de un artículo seleccionado.
+•	Login.jsx / Register.jsx: Formularios para autenticar o registrar clientes.
+•	Profile.jsx: Sección privada donde el usuario puede ver o editar sus datos.
+•	Checkout.jsx: Pantalla de confirmación y pago de la compra.
+•	ListadoAdoptame.jsx: Muestra los animales rescatados desde la API externa.
 
-#### 1.4. `Layout.jsx`
-Componente principal que organiza el diseño de la aplicación. Incluye:
-- `Navbar`
-- `ErrorBoundary`
-- `Footer`
-- `Outlet` para renderizar contenido dinámico según las rutas.
 
----
 
-### 2. **Helpers**
-#### 2.1. `CarouselData.js`
-Archivo que contiene datos estáticos del carrusel, como imágenes y descripciones.
+#### 1.4. `contexts`
+La carpeta /contexts contiene la configuración del estado global de la aplicación usando React Context API. Esto permite compartir información importante (como datos del cliente autenticado) entre múltiples componentes sin necesidad de pasar props manualmente.
+**Funciones principales:**
+•	Centralizar el manejo de autenticación del cliente (inicio de sesión, logout, token).
+•	Hacer persistente la sesión del usuario mientras navega por la aplicación.
+•	Permitir acceso a los datos del cliente desde cualquier componente.
 
-**Ejemplo:**
-```javascript
-export const images = [
-  { title: "Lola", subtitle: "Hola, soy Lola y estoy en adopción", img: Lola },
-];
-```
-### 3. **Pages**
-### 3.1.  `Carousel.jsx`
-Página principal del catálogo de animales en adopción. Incluye paginación y tarjetas con información básica de cada animal.
+**Contiene las carpetas**
+- `Clients`
+- `Cart`
+- `Articles`
+- `Alert` 
 
-<Button
-  component={Link}
-  to={`/catalog/${animal.id}`}
-  state={{ animal }}
->
-  Más Información
-</Button>
+Cada una de ellas maneja el State.jsx, Reducer.jsx y Context.jsx
 
 ---
 
-#### 3.2. `CatalogDetail.jsx`
-Muestra detalles completos de un animal seleccionado desde el catálogo.
+### 2. **Otras carpetas**
+#### 2.1. `config`
+Contiene archivos Axios.jsx y Auth.jsx 
+La carpeta `config` centraliza las configuraciones clave relacionadas con la conexión al backend y el manejo del token de autenticación. Su objetivo es mantener la lógica de red y seguridad organizada, reutilizable y fuera de los componentes visuales.
+**Archivos incluidos:**
+- Axios.jsx: Configura una instancia personalizada de Axios para conectarse al backend definido en las variables de entorno (VITE_BACKEND_URL).
+- 
+**Incluye:**
+o	Interceptores que agregan automáticamente el token JWT a cada solicitud si está presente.
+o	Manejo global de errores, incluyendo redirección automática al login si el token es inválido o expirado.
+o	Mensajes de consola para facilitar el debugging durante el desarrollo.
 
----
+- token.jsx
+Función auxiliar para asignar o limpiar el token JWT desde localStorage en la configuración de Axios.
+Se recomienda ejecutarla al iniciar sesión o cerrar sesión para garantizar que todas las solicitudes lleven el encabezado correcto (x-auth-token).
 
-#### 3.3. `Formulario.jsx`
-Formulario para que los usuarios contacten a la fundación y realicen solicitudes de adopción.
+### 2.2.  `components`
+La carpeta /components contiene todos los componentes reutilizables que forman la interfaz visual de la app. Estos componentes son piezas independientes que pueden ser usadas en múltiples páginas.
+Funciones principales:
+•	Definir la estructura visual del sitio (Navbar, Footer, Cards, Inputs, etc.).
+•	Reutilizar diseño y lógica para mantener el código más limpio y organizado.
+•	Mejorar la escalabilidad de la aplicación.
+Ejemplos comunes:
+•	Navbar.jsx: Barra de navegación superior.
+•	Footer.jsx: Pie de página.
+•	Card.jsx o TarjetaAdoptame.jsx: Componente visual para mostrar productos o animales.
+•	InputAnimal.jsx: Campo de búsqueda o filtros para animales.
 
-**Características:**
-- Muestra un modal al enviar el formulario.
-- Validación básica de campos requeridos.
-
----
-
-### 4. **Router**
-Define las rutas principales de la aplicación, incluyendo:
-- `/`: Página de inicio.
-- `/catalog`: Catálogo de animales.
-- `/catalog/:id`: Detalle de un animal.
-- `/formulario`: Formulario de contacto.
-
----
-
-## Funcionamiento
-
-1. **Inicio**: La aplicación comienza con una página de bienvenida que incluye un carrusel con imágenes.
-2. **Catálogo**: El usuario puede navegar al catálogo y ver una lista de animales.
-3. **Detalle**: Al seleccionar un animal, se muestra información detallada.
-4. **Formulario**: Permite enviar una solicitud de adopción.
-
+Contacto
+📧 jimenaespinoza@gmail.com
+👩‍💻 Desarrollado por Jimena Espinoza
+🎓 Proyecto académico - Cohorte 16
+📦 Backend completo con autenticación y Stripe
